@@ -13,9 +13,6 @@ jobs:
     name: heroku deploy
     steps:
       - uses: actions/checkout@v2
-      - run: echo "PORT=4001" > .env
-      - run: echo "SECRET_JWT=${{secrets.SECRET_JWT}}" >> .env
-      - run: echo "DB_URL=${{secrets.DB_URL}}" >> .env
       - uses: akhileshns/heroku-deploy@v3.12.12 
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
@@ -24,7 +21,5 @@ jobs:
           usedocker: true
           docker_build_args: |
             DB_URL
-            PORT
         env:
           DB_URL: ${{ secrets.DB_URL }}
-          PORT: 4004
