@@ -7,7 +7,7 @@
 Alectrion é um sistema de gerenciamento de inventário, ordens de serviços e movimentações de equipamentos de informática,
 feito para atender às demandas da DSTI (Divisão de Suporte Técnico Interno) da Polícia Civil do estado de Goiás.
 
-Aplicação disponível em: TO-DO
+Aplicação disponível em: https://alectrion-2022.herokuapp.com/
 
 ## Requisitos
 
