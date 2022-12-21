@@ -1,8 +1,8 @@
 name: heroku-deploy
 on:
- pull_request:
-  branches:
-     - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   deploy-heroku:
@@ -13,7 +13,7 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.12.12 
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "alectrion-user-api"
+          heroku_app_name: "alectrion-user-2022"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true
           docker_build_args: |
