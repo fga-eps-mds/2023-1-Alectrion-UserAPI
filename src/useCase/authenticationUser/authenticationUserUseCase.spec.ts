@@ -95,4 +95,29 @@ describe('Should teste autentication use case', () => {
     expect(response.isSuccess).toEqual(useCaseExpectedResponse.isSuccess)
     expect(response.error).toEqual(new LoginPasswordError())
   })
+
+  it('should authentication with email and return success ', async () => {
+    const mockedGenerateToken = datatype.string()
+    mockedRepository.findToAuthenticate.mockResolvedValue(mockedUser)
+    mockedEncryptor.compare.mockReturnValue(true)
+    mockedToken.generateToken.mockReturnValue(mockedGenerateToken)
+    const authenticationInput = {
+      username: mockedUser.email,
+      password: mockedUser.password
+    }
+    const response = await authenticateUserUseCase.execute(authenticationInput)
+
+    const useCaseExpectedResponse = {
+      isSuccess: true,
+      data: {
+        token: mockedGenerateToken,
+        expireIn: '3600s',
+        email: mockedUser.email,
+        name: mockedUser.name,
+        role: mockedUser.role
+      }
+    }
+
+    expect(response).toEqual(useCaseExpectedResponse)
+  })
 })

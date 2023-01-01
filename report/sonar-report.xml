@@ -1,0 +1,60 @@
+<testExecutions version="1">
+<file path="src/useCase/authenticationUser/authenticationUserUseCase.spec.ts">
+<testCase name="Should teste autentication use case should authentication with success " duration="3" />
+<testCase name="Should teste autentication use case should return an error - username not present in DB" duration="1" />
+<testCase name="Should teste autentication use case should return an error - password is incorrect" duration="1" />
+<testCase name="Should teste autentication use case should authentication with email and return success " duration="1" />
+</file>
+<file path="src/useCase/createUser/createUserUseCase.spec.ts">
+<testCase name="Should test use case create user should call findUserByEmail with correct values" duration="1" />
+<testCase name="Should test use case create user should return UserAlreadyExistsError if userRepository returns data" duration="1" />
+<testCase name="Should test use case create user should return UserAlreadyExistsError if userRepository returns data" duration="2" />
+<testCase name="Should test use case create user should return UserAlreadyExistsError if userRepository returns data" duration="1" />
+<testCase name="Should test use case create user should return CreateUserError if userRepository CreateUser returns undefined" duration="1" />
+</file>
+<file path="src/presentation/controller/createUserController.spec.ts">
+<testCase name="CreateUserController CreateUserController return 200 when create user with success" duration="1" />
+<testCase name="CreateUserController Deve retonar 400 quando erro de usu" duration="1" />
+<testCase name="CreateUserController Deve retonar 500 quando o servidor n&#xE3;o precessar" duration="1" />
+</file>
+<file path="src/presentation/controller/updateUserController.spec.ts">
+<testCase name="Should test update user controller Should update user with success" duration="1" />
+<testCase name="Should test update user controller Should return bad request when fail update" duration="2" />
+<testCase name="Should test update user controller Should return server errir whrn fail " duration="1" />
+</file>
+<file path="src/useCase/deleteUser/deleteUserUseCase.spec.ts">
+<testCase name="Should test conditions for soft delete Should succesfully delete a user" duration="1" />
+<testCase name="Should test conditions for soft delete Should fail when user not found." duration="1" />
+<testCase name="Should test conditions for soft delete Should fail when update user." duration="2" />
+</file>
+<file path="src/presentation/controller/deleteUserController.spec.ts">
+<testCase name="Should test update user controller Should delete user with success" duration="1" />
+<testCase name="Should test update user controller Should return bad request when fail deleting" duration="1" />
+<testCase name="Should test update user controller Should return server errir whrn fail " duration="1" />
+</file>
+<file path="src/useCase/getUser/getUserUseCase.spec.ts">
+<testCase name="Should test user use case to get user should return an use with success when search by a userName" duration="1" />
+<testCase name="Should test user use case to get user should return an use with success when search by a email" duration="1" />
+<testCase name="Should test user use case to get user should return an use with success when search by a userId" duration="1" />
+<testCase name="Should test user use case to get user should return an error when params are incorrect" duration="1" />
+</file>
+<file path="src/presentation/controller/authenticateUserController.spec.ts">
+<testCase name="AuthenticateUserController should return 200 when authenticate an user " duration="2" />
+<testCase name="AuthenticateUserController should return 500 when not authenticate an user" duration="1" />
+</file>
+<file path="src/useCase/updateUser/updateUserUseCase.spec.ts">
+<testCase name="Should test use case update user Should update use with success" duration="2" />
+<testCase name="Should test use case update user Should fail when update user." duration="1" />
+</file>
+<file path="src/presentation/controller/getUserController.spec.ts">
+<testCase name="Should test get user controller Should return bad request when fail searching" duration="2" />
+<testCase name="Should test get user controller Should return server error when fail " duration="1" />
+</file>
+<file path="src/adapters/bcryptAdapter.spec.ts">
+<testCase name="BcryptAdapter should call BcryptAdapter with correct params" duration="1" />
+<testCase name="BcryptAdapter should compare 2 passwords and return a true if it are the same" duration="1" />
+</file>
+<file path="src/adapters/tokenAdapter.spec.ts">
+<testCase name="shoul test token adapter should return a token" duration="1" />
+</file>
+</testExecutions>
