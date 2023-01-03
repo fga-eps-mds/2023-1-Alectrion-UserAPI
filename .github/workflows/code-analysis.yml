@@ -38,7 +38,7 @@ jobs:
         git config --global user.email "${{secrets.GIT_USER_EMAIL}}"
         git config --global user.name "${{secrets.GIT_USER_NAME}}"
         git clone --single-branch --branch main "https://x-access-token:${{secrets.API_TOKEN_GITHUB}}@github.com/fga-eps-mds/2022-2-Alectrion-DOC" 2022-2-Alectrion-DOC
-        mkdir 2022-2-Alectrion-DOC/analytics-raw-data
+        mkdir -p 2022-2-Alectrion-DOC/analytics-raw-data
         cp -R analytics-raw-data/*.json 2022-2-Alectrion-DOC/analytics-raw-data
         cd 2022-2-Alectrion-DOC
         git add .
