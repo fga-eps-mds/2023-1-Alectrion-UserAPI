@@ -17,5 +17,5 @@ export interface Repository {
   findOneByEmail(email: string): Promise<User | undefined>
   findOneByUsername(username: string): Promise<User | undefined>
   findAll(): Promise<User | undefined>
-  findToAuthenticate(userName: string): Promise<User | undefined | null>
+  findToAuthenticate(userInput: string): Promise<User | undefined | null>
 }

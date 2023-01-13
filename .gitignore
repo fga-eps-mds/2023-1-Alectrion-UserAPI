@@ -4,3 +4,4 @@ coverage
 db.env
 data
 dist
+report

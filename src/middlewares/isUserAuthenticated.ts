@@ -27,9 +27,7 @@ export function IsUserAuthenticated(
   const [, token] = authToken.split(' ')
   try {
     const { role } = verify(token, secret) as PayLoad
-    if (role !== Role.ADMIN) {
-      return res.status(403).send(new NotAdminError().name)
-    }
+
     return next()
   } catch (error) {
     return res.status(401).end()
