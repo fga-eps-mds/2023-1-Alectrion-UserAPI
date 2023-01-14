@@ -1,11 +1,14 @@
 name: heroku-deploy
 on:
-  pull_request:
-    branches:
-      - main
+   pull_request:
+     types:
+       - closed
+     branches:
+       - main
 
 jobs:
-  deploy-heroku:
+   deploy-heroku:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     name: heroku deploy
     steps:
