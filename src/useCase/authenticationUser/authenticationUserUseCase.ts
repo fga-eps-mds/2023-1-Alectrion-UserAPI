@@ -30,6 +30,7 @@ export class AuthenticateUserUseCase
       email: string
       name: string
       role: string
+      job: string
     }>
 {
   constructor(
@@ -45,6 +46,7 @@ export class AuthenticateUserUseCase
       email: string
       name: string
       role: string
+      job: string
     }>
   > {
     let userFound = null
@@ -78,7 +80,8 @@ export class AuthenticateUserUseCase
         expireIn: timeTokenExpire,
         email: userFound.email,
         name: userFound.name,
-        role: userFound.role
+        role: userFound.role,
+        job: userFound.job
       }
     }
   }
