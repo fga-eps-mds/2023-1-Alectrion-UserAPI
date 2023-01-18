@@ -8,6 +8,7 @@ export interface UpdateUserData {
   email?: string
   username?: string
   jobFunction?: string
+  role?: string
   password?: string
 }
 
@@ -27,7 +28,6 @@ export class UpdateUserUseCase implements UseCase<{ message: string }> {
   async execute(
     userUpdate: UpdateUserData
   ): Promise<UseCaseReponse<{ message: string }>> {
-    const { userId, name, email, jobFunction, username } = userUpdate
 
     if (userUpdate.password !== undefined) {
       const hashedPassword = this.encryptor.encrypt(userUpdate.password)
@@ -36,13 +36,9 @@ export class UpdateUserUseCase implements UseCase<{ message: string }> {
         password: hashedPassword
       })
       return { isSuccess: true, data: { message: 'Usuário atualizado!' } }
-    } else {
+    } else {      
       return (await this.userRepository.updateOne({
-        userId,
-        name,
-        email,
-        jobFunction,
-        username
+        ...userUpdate,
       }))
         ? { isSuccess: true, data: { message: 'Usuário atualizado!' } }
         : {

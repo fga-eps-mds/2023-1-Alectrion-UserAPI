@@ -9,12 +9,15 @@ export interface CreateUserData {
   email: string
   username: string
   jobFunction:
-    | 'DELEGADO'
-    | 'AGENTE_POLICIA'
-    | 'ESCRIVAO'
-    | 'COORDENADOR'
-    | 'CHEFE_SECAO'
-    | 'GENERICO'
+  | 'DELEGADO'
+  | 'AGENTE_POLICIA'
+  | 'ESCRIVAO'
+  | 'COORDENADOR'
+  | 'CHEFE_SECAO'
+  | 'GENERICO'
+  | 'COMISSIONADO'
+  | 'ESTAGIARIO'
+  | 'SUPERINTENDENTE'
   role: 'ADMIN' | 'GERENTE' | 'BASICO' | 'CONSULTA'
   password: string
 }
