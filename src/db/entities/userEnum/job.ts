@@ -5,5 +5,8 @@ export enum Job {
   ESCRIVAO = 'escrivao de policia',
   COORDENADOR = 'coordenador',
   CHEFE_SECAO = 'chefe de secao',
-  GENERICO = 'generico'
+  GENERICO = 'generico',
+  COMISSIONADO = 'comissionado',
+  ESTAGIARIO = 'estagiario',
+  SUPERINTENDENTE = 'superintendente',
 }

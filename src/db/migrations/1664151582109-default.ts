@@ -5,7 +5,7 @@ export class default1664151582109 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TYPE "public"."user_job_enum" AS ENUM('delegado', 'agente de policia', 'escrivao de policia', 'coordenador', 'chefe de secao', 'generico')`
+      `CREATE TYPE "public"."user_job_enum" AS ENUM('delegado', 'agente de policia', 'escrivao de policia', 'coordenador', 'chefe de secao', 'generico', 'comissionado', 'estagiario', 'superintendente')`
     )
     await queryRunner.query(
       `CREATE TYPE "public"."user_role_enum" AS ENUM('administrador', 'gerente', 'basico', 'consulta')`
