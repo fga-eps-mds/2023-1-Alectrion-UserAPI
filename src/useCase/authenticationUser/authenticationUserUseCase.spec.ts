@@ -53,7 +53,8 @@ describe('Should teste autentication use case', () => {
         expireIn,
         email: mockedUser.email,
         name: mockedUser.name,
-        role: mockedUser.role
+        role: mockedUser.role,
+        job: mockedUser.job
       }
     }
 
@@ -114,7 +115,8 @@ describe('Should teste autentication use case', () => {
         expireIn: '3600s',
         email: mockedUser.email,
         name: mockedUser.name,
-        role: mockedUser.role
+        role: mockedUser.role,
+        job: mockedUser.job
       }
     }
 
