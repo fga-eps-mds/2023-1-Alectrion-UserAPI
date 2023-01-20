@@ -20,6 +20,7 @@ type Model =
       email: string
       name: string
       role: string
+      job: string
     }
 
 export class AuthenticationUserController extends Controller {

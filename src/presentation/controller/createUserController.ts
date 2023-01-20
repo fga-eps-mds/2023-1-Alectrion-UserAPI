@@ -15,9 +15,13 @@ type HttpRequest = {
     | 'COORDENADOR'
     | 'CHEFE_SECAO'
     | 'GENERICO'
+    | 'COMISSIONADO'
+    | 'ESTAGIARIO'
+    | 'SUPERINTENDENTE'
   role: 'ADMIN' | 'GERENTE' | 'BASICO' | 'CONSULTA'
   password: string
 }
+
 type Model =
   | Error
   | {

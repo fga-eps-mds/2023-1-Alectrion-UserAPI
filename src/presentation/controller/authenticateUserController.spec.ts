@@ -26,7 +26,8 @@ describe('AuthenticateUserController', () => {
         expireIn: datatype.string(),
         email: datatype.string(),
         name: datatype.string(),
-        role: datatype.string()
+        role: datatype.string(),
+        job: datatype.string()
       }
     }
     authenticateUserUseCaseMocked.execute.mockResolvedValue(useCaseReponseMock)
