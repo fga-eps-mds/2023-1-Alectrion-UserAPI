@@ -33,8 +33,8 @@ const authenticateUserUseCase = new AuthenticateUserUseCase(
   mockedEncryptor,
   mockedToken
 )
-describe('Should teste autentication use case', () => {
-  it('should authentication with success ', async () => {
+describe('Authentication use case', () => {
+  it('should authenticate with success ', async () => {
     const mockedGenerateToken = datatype.string()
     mockedRepository.findToAuthenticate.mockResolvedValue(mockedUser)
     mockedEncryptor.compare.mockReturnValue(true)
@@ -53,7 +53,8 @@ describe('Should teste autentication use case', () => {
         expireIn,
         email: mockedUser.email,
         name: mockedUser.name,
-        role: mockedUser.role
+        role: mockedUser.role,
+        job: mockedUser.job
       }
     }
 
@@ -96,7 +97,7 @@ describe('Should teste autentication use case', () => {
     expect(response.error).toEqual(new LoginPasswordError())
   })
 
-  it('should authentication with email and return success ', async () => {
+  it('should authenticate with email and return success ', async () => {
     const mockedGenerateToken = datatype.string()
     mockedRepository.findToAuthenticate.mockResolvedValue(mockedUser)
     mockedEncryptor.compare.mockReturnValue(true)
@@ -114,7 +115,8 @@ describe('Should teste autentication use case', () => {
         expireIn: '3600s',
         email: mockedUser.email,
         name: mockedUser.name,
-        role: mockedUser.role
+        role: mockedUser.role,
+        job: mockedUser.job
       }
     }
 
