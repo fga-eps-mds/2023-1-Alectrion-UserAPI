@@ -7,8 +7,8 @@ services:
       - db.env
     volumes:
       - ./data:/var/lib/postgresql/data
-    ports:
-      - '5433:5432'
+    networks:
+      - alectrion-user-network
 
   user_api:
     depends_on:
@@ -18,7 +18,12 @@ services:
       - .env
     volumes:
       - ./:/app
-    ports:
-      - 4001:4001
+    networks:
+      - alectrion-user-network
+      - alectrion-network
     command: bash -c "yarn && yarn migration:run && yarn dev"
 
+networks:
+  alectrion-user-network:
+  alectrion-network:
+    external: true
