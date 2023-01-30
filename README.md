@@ -26,13 +26,19 @@ Aplicação disponível em: https://alectrion-2022.herokuapp.com/
 
 3. Crie o arquivo .env e db.env utilizando como base os arquivo de exemplo(.env.example e o db.env.example).
 
-4. Execute o projeto
+4. Crie a network ```alectrion-network``` caso ela não exista. Para verificar se a network existe execute:
+> docker network ls
+
+Se a network não existir execute o seguinte comando para criar
+> docker network create alectrion-network
+
+5. Execute o projeto
     
 > docker-compose up
 
 A aplicação será iniciada na porta 4001. Utilize como usuário: ```admin``` e senha: ```admin1234```
 
-OBS: Caso for necessário a conexão uma conexão que utilize o SSL, descomentar a linha 7: ```ssl: { rejectUnauthorized: false },``` do arquivo ```src/db/config.ts```
+OBS: Caso for necessário a conexão uma conexão que utilize o SSL, adicione a variável ```DB_SSL=true``` no arquivo .env
 
 ## Contribuir
 Para contribuir com esse projeto é importante seguir nosso [Guia de Contribuição](https://fga-eps-mds.github.io/2022-2-Alectrion-DOC/#/./Documentos/guia-contribuicao.md) do repositório e seguir nossa [Política de Branches](https://fga-eps-mds.github.io/2022-2-Alectrion-DOC/#/./Documentos/Documentos/politicas-branch.md).
