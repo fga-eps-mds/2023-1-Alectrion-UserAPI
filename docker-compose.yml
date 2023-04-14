@@ -21,6 +21,8 @@ services:
     networks:
       - alectrion-user-network
       - alectrion-network
+    ports:
+      - 4001:4001
     command: bash -c "yarn && yarn migration:run && yarn dev"
 
 networks:
