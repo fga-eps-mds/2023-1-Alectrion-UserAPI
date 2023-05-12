@@ -1,48 +1,40 @@
-name: CodeAnalysis
+name: Análise de Código
 on:
-  pull_request:
-    branches:
-      - main
-      - dev
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+            - develop
 
 jobs:
-  sonarcloud:
-    name: SonarCloud
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 
-      - name: Install dependencies
-        run: yarn
-      - name: Test and coverage
-        run: yarn test:all
-      - name: SonarCloud Scan
-        if: ${{ always() }}
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{secrets.GIT_TOKEN}}
-          SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
-  get_metrics:
-    if: always() && github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    needs: sonarcloud
-    steps:
-    - name: checkout
-      uses: actions/checkout@v2
-    - name: Get metrics and commit
-      run: |
-        mkdir analytics-raw-data
-        url="https://sonarcloud.io/api/measures/component_tree?component=${{secrets.PROJECT_KEY}}&metricKeys=files,functions,complexity,comment_lines_density,duplicated_lines_density,coverage,ncloc,tests,test_errors,test_failures,test_execution_time,test_success_density,security_rating&pullRequest=${{github.event.pull_request.number}}&qualifiers=FIL,TRK,UTS,DIR&strategy=all"
-        curl $(echo $url | tr -d \') > analytics-raw-data/fga-eps-mds-2022-2-Alectrion-UserAPI-$(date +'%m-%d-%Y-%H-%M-%S')-v0.${{github.event.pull_request.number}}.0.json
-    - name: push metrics
-      run: |
-        git config --global user.email "${{secrets.GIT_USER_EMAIL}}"
-        git config --global user.name "${{secrets.GIT_USER_NAME}}"
-        git clone --single-branch --branch main "https://x-access-token:${{secrets.API_TOKEN_GITHUB}}@github.com/fga-eps-mds/2022-2-Alectrion-DOC" 2022-2-Alectrion-DOC
-        mkdir -p 2022-2-Alectrion-DOC/analytics-raw-data
-        cp -R analytics-raw-data/*.json 2022-2-Alectrion-DOC/analytics-raw-data
-        cd 2022-2-Alectrion-DOC
-        git add .
-        git commit -m "doc: adiciona metricas do ${{ github.event.repository.name }} PR #${{github.event.pull_request.number}}"
-        git push
+    sonarcloud:
+        name: SonarCloud
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
+
+            - name: Instala dependências
+              run: yarn
+
+            - name: Executa testes e gera cobertura
+              run: yarn test:all
+
+            - name: Executa SonarCloud Scan
+              if: ${{ always() }}
+              uses: SonarSource/sonarcloud-github-action@master
+              env:
+                  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+                  SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+
+            - name: Envia cobertura para o Codecov
+              uses: codecov/codecov-action@v3
+              with:
+                  token: ${{ secrets.CODECOV_TOKEN }}
+                  fail_ci_if_error: true
+                  flags: jest
+                  name: 2023-1-Alectrion-UserAPI
+                  verbose: true
