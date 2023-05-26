@@ -56,6 +56,15 @@ describe('Should test user use case to get user', () => {
     expect(result).toEqual({ isSuccess: true, data: [mockedUser] })
   })
 
+  it('should return all users with success when passing allUsers', async () => {
+    const mockedData = {
+      allUsers: true
+    }
+    repositoryMocked.findAll.mockResolvedValue(mockedUser)
+    const result = await getUserUseCase.execute(mockedData)
+    expect(result).toEqual({ isSuccess: true, data: [mockedUser] })
+  })
+
   it('should return an error when params are incorrect', async () => {
     const mockedData = {}
     const result = await getUserUseCase.execute(mockedData)
