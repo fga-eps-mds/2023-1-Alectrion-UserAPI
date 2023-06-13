@@ -7,6 +7,7 @@ export interface Repository {
     name: string
     email: string
     username: string
+    cpf: string
     job: Job
     role: Role
     password: string

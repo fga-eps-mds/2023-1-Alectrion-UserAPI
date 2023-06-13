@@ -8,6 +8,7 @@ export interface CreateUserData {
   name: string
   email: string
   username: string
+  cpf: string
   jobFunction:
   | 'DELEGADO'
   | 'AGENTE_POLICIA'

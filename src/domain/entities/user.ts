@@ -12,6 +12,8 @@ export type User = {
 
   username: string
 
+  cpf: string
+
   job: Job
 
   role: Role

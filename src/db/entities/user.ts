@@ -22,6 +22,9 @@ export class User {
   @Column()
   username: string
 
+  @Column()
+  cpf: string
+
   @Column({
     type: 'enum',
     enum: Job,

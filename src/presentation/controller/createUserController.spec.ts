@@ -13,6 +13,7 @@ describe('CreateUserController', () => {
     name: datatype.string(),
     email: datatype.string(),
     username: datatype.string(),
+    cpf: datatype.string(),
     jobFunction: 'GENERICO',
     role: 'BASICO',
     password: datatype.string()
