@@ -5,7 +5,7 @@ import {
   UserAlreadyExistsError
 } from './createUserUseCase'
 import { MockProxy, mock } from 'jest-mock-extended'
-import { Encryptor } from '../../services/encryptor'
+import { Encryptor } from '../../infrastructure/service/encrypte.service'
 import { Repository } from '../../repository/protocol/repository'
 import { datatype } from 'faker'
 import { Job } from '../../db/entities/userEnum/job'

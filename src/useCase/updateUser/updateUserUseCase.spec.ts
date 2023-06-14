@@ -6,7 +6,7 @@ import {
   UpdateUserData
 } from './updateUserUseCase'
 import { datatype } from 'faker'
-import { Encryptor } from '../../services/encryptor'
+import { Encryptor } from '../../infrastructure/service/encrypte.service'
 
 const repositoryMocked = mock<Repository>()
 const encryptorMock = mock<Encryptor>()

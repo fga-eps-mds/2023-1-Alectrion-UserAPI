@@ -1,6 +1,6 @@
 import { UseCase, UseCaseReponse } from '../protocols/useCase'
 import { Repository } from '../../repository/protocol/repository'
-import { Encryptor } from '../../services/encryptor'
+import { EncrypteService } from '../../infrastructure/service/encrypte.service'
 
 export interface UpdateUserData {
   userId: string
@@ -22,13 +22,12 @@ export class UpdateUserError extends Error {
 export class UpdateUserUseCase implements UseCase<{ message: string }> {
   constructor(
     private readonly userRepository: Repository,
-    private readonly encryptor: Encryptor
+    private readonly encryptor: EncrypteService
   ) {}
 
   async execute(
     userUpdate: UpdateUserData
   ): Promise<UseCaseReponse<{ message: string }>> {
-
     if (userUpdate.password !== undefined) {
       const hashedPassword = this.encryptor.encrypt(userUpdate.password)
       await this.userRepository.updateOne({
@@ -36,9 +35,9 @@ export class UpdateUserUseCase implements UseCase<{ message: string }> {
         password: hashedPassword
       })
       return { isSuccess: true, data: { message: 'Usuário atualizado!' } }
-    } else {      
+    } else {
       return (await this.userRepository.updateOne({
-        ...userUpdate,
+        ...userUpdate
       }))
         ? { isSuccess: true, data: { message: 'Usuário atualizado!' } }
         : {

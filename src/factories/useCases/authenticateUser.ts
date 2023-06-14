@@ -1,11 +1,11 @@
 import UserRepository from '../../repository/userRepository'
-import { BcryptAdapter } from '../../adapters/bcryptAdapter'
+import { BcryptService } from '../../infrastructure/service/bcrypt.service'
 import { AuthenticateUserUseCase } from '../../useCase/authenticationUser/authenticationUserUseCase'
-import { CreateToken } from '../../adapters/tokenAdapter'
+import { TokenGeneratorService } from '../../infrastructure/service/token-generator.service'
 
 export const makeAuthenticationUser = () => {
   const userRepository = new UserRepository()
-  const encryptor = new BcryptAdapter()
-  const token = new CreateToken()
+  const encryptor = new BcryptService()
+  const token = new TokenGeneratorService()
   return new AuthenticateUserUseCase(userRepository, encryptor, token)
 }

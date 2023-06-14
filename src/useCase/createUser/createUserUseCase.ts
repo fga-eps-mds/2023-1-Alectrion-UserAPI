@@ -1,6 +1,6 @@
 import { UseCase, UseCaseReponse } from '../protocols/useCase'
 import { Repository } from '../../repository/protocol/repository'
-import { Encryptor } from '../../services/encryptor'
+import { Encryptor } from '../../infrastructure/service/encrypte.service'
 import { Job } from '../../db/entities/userEnum/job'
 import { Role } from '../../db/entities/userEnum/role'
 

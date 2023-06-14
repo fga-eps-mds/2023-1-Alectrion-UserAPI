@@ -1,7 +1,7 @@
 import { UseCase, UseCaseReponse } from '../protocols/useCase'
 import { Repository } from '../../repository/protocol/repository'
-import { Encryptor } from '../../services/encryptor'
-import { Token } from '../../services/tokenGenerator'
+import { EncrypteService } from '../../infrastructure/service/encrypte.service'
+import { TokenService } from '../../infrastructure/service/token.service'
 
 export class LoginUsernameError extends Error {
   constructor() {
@@ -35,8 +35,8 @@ export class AuthenticateUserUseCase
 {
   constructor(
     private readonly userRepository: Repository,
-    private readonly encryptor: Encryptor,
-    private readonly token: Token
+    private readonly encryptor: EncrypteService,
+    private readonly token: TokenService
   ) {}
 
   async execute(userData: DataUserLogin): Promise<
@@ -65,13 +65,7 @@ export class AuthenticateUserUseCase
       return { isSuccess: false, error: new LoginPasswordError() }
     }
     const timeTokenExpire = process.env.TIME_TOKEN || '3600s'
-    const tokenRequested = this.token.generateToken(
-      { userId: userFound.id, role: userFound.role },
-      process.env.SECRET_JWT,
-      {
-        expiresIn: timeTokenExpire
-      }
-    )
+    const tokenRequested = this.token.generateToken(userFound.id ?? '')
 
     return {
       isSuccess: true,

@@ -1,6 +1,6 @@
 import { Repository } from '../../repository/protocol/repository'
-import { Encryptor } from '../../services/encryptor'
-import { Token } from '../../services/tokenGenerator'
+import { Encryptor } from '../../infrastructure/service/encrypte.service'
+import { Token } from '../../infrastructure/service/token.service'
 import { mock } from 'jest-mock-extended'
 import { datatype } from 'faker'
 import { Job } from '../../db/entities/userEnum/job'
