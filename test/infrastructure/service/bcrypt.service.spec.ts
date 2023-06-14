@@ -1,4 +1,4 @@
-import { BcryptAdapter } from './bcryptAdapter'
+import { BcryptService } from '../../../src/infrastructure/service/bcrypt.service'
 import { compareSync, hashSync } from 'bcrypt'
 
 jest.mock('bcrypt')
@@ -6,12 +6,12 @@ jest.mock('bcrypt')
 const mockedDependency = jest.mocked(hashSync)
 const mockedDependencyCompare = jest.mocked(compareSync)
 
-describe('BcryptAdapter', () => {
-  let sut: BcryptAdapter
+describe('BcryptService', () => {
+  let sut: BcryptService
   beforeEach(() => {
-    sut = new BcryptAdapter()
+    sut = new BcryptService()
   })
-  it('should call BcryptAdapter with correct params', () => {
+  it('should call BcryptService with correct params', () => {
     mockedDependency.mockReturnValue('value')
     sut.encrypt('any_password')
 
