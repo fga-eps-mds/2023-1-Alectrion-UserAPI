@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import express, { json } from 'express'
-import routes from './routes'
+import routes from './presentation/routes'
 import { dataSource } from './db/config'
 import cors from 'cors'
 
