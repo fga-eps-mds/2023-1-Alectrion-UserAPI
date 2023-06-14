@@ -1,6 +1,6 @@
-import { UpdateUserControler } from '../../presentation/controller/updateUserController'
-import { makeUpdatePassword } from '../useCases/updatePassword'
+import { UpdatePasswordControler } from '../../presentation/controller/updatePasswordController'
+import { makeUpdateUser } from '../useCases/updatePassword'
 
 export const makeUpdatePasswordController = () => {
-  return new UpdatePasswordControler(makeUpdatePassword())
+  return new UpdatePasswordControler(makeUpdateUser())
 }
