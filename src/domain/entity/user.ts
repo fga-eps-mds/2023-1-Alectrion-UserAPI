@@ -4,9 +4,8 @@ import { Role } from './role'
 export class User {
   private id: string
   private cpf: string
-  private functionalNumber: string
+  private username: string
   private name: string
-  private lastName: string
   private password: string
   private email: string
   private job: Job
@@ -32,12 +31,12 @@ export class User {
     this.cpf = cpf
   }
 
-  public getFuncionalNumber(): string {
-    return this.functionalNumber
+  public getUsername(): string {
+    return this.username
   }
 
-  public setFuncionalNumber(functionalNumber: string): void {
-    this.functionalNumber = functionalNumber
+  public setUsername(username: string): void {
+    this.username = username
   }
 
   public getName(): string {
@@ -46,14 +45,6 @@ export class User {
 
   public setName(name: string): void {
     this.name = name
-  }
-
-  public getLastName(): string {
-    return this.lastName
-  }
-
-  public setLastName(lastName: string): void {
-    this.lastName = lastName
   }
 
   public getPassword(): string {
