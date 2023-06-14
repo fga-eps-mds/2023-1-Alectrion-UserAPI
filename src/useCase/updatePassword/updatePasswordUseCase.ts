@@ -3,6 +3,7 @@ import { Repository } from '../../repository/protocol/repository'
 import { Encryptor } from '../../services/encryptor'
 
 export interface UpdatePasswordData {
+  userId?: string
   email?: string
   username?: string
   password?: string
