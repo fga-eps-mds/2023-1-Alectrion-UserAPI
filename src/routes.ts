@@ -2,6 +2,7 @@ import { makeCreateUserController } from './factories/controllers/createUser'
 import { Router } from 'express'
 import { adaptExpressRoute as adapt } from './adapters/express-router'
 import { makeUpdateUserController } from './factories/controllers/updateUser'
+import { makeUpdatePasswordController } from './factories/controllers/updatePassword'
 import { makeGetUserController } from './factories/controllers/getUser'
 import { makeAuthenticateUserController } from './factories/controllers/authenticateUser'
 import { IsUserAuthenticated } from './middlewares/isUserAuthenticated'
@@ -11,6 +12,7 @@ import { makeRecoverUserPasswordController } from './factories/controllers/recov
 const routes = Router()
 
 routes.put('/update', adapt(makeUpdateUserController()))
+routes.put('/updatePassword', adapt(makeUpdatePasswordController()))
 routes.post('/create', IsUserAuthenticated, adapt(makeCreateUserController()))
 routes.get('/get', IsUserAuthenticated, adapt(makeGetUserController()))
 routes.post('/login', adapt(makeAuthenticateUserController()))
