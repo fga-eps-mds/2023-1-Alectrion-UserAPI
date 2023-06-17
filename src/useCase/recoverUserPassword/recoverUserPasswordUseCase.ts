@@ -1,6 +1,7 @@
 import { UseCase, UseCaseReponse } from '../protocols/useCase'
 import { Repository } from '../../repository/protocol/repository'
 import { Encryptor } from '../../services/encryptor'
+import { User } from '../../db/entities/user'
 
 export interface RecoverUserPasswordData {
   email?: string
@@ -13,8 +14,16 @@ export class EmailNotFoundError extends Error {
   }
 }
 
+type resp = {
+  message: string,
+  user: User
+}
+
 export class RecoverUserPasswordUseCase
-  implements UseCase<{ message: string }>
+  implements UseCase<{ 
+    message: string 
+    user: User 
+  }>
 {
   constructor(
     private readonly userRepository: Repository,
@@ -23,24 +32,26 @@ export class RecoverUserPasswordUseCase
 
   async execute(
     recoverPassword: RecoverUserPasswordData
-  ): Promise<UseCaseReponse<{ message: string }>> {
-      const response = await this.userRepository.findOneByEmail(
-        recoverPassword.email?
-      )
-      if (response === undefined)
-        return {
-          isSuccess: false,
-          error: new EmailNotFoundError()
+  ): Promise<UseCaseReponse<{ 
+    message: string 
+    user: User 
+  }>> {
+    const response: User | undefined = await this.userRepository.findOneByEmail(
+      recoverPassword.email ? recoverPassword.email : ''
+    )
+    if (response === undefined)
+      return {
+        isSuccess: false,
+        error: new EmailNotFoundError()
+      }
+
+      //enviar email com senha temporaria
+    return {
+      isSuccess: true,
+        data: {
+          message: 'Usuario encontrado',
+          user: response
         }
-     else {
-      return (await this.userRepository.updateOne({
-        ...recoverPassword
-      }))
-        ? { isSuccess: true, data: { message: 'Usuário atualizado!' } }
-        : {
-            isSuccess: false,
-            error: new EmailNotFoundError()
-          }
     }
   }
 }
