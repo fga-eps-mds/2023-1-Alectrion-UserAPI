@@ -26,7 +26,8 @@ const mockedUser: User = {
   role: Role.ADMIN,
   password: datatype.string(),
   createdAt: new Date(),
-  updatedAt: new Date()
+  updatedAt: new Date(),
+  temporaryPassword: false
 }
 
 const authenticateUserUseCase = new AuthenticateUserUseCase(
