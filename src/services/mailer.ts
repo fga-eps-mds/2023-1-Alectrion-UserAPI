@@ -1,7 +1,9 @@
 import nodemailer from 'nodemailer'
-import crypto from 'crypto'
 
-export const sendEmail = async (email: string) => {
+export const sendEmail = async (
+  email: string,
+  temporaryPassword: string
+): Promise<boolean> => {
   const transporter = nodemailer.createTransport({
     host: process.env.HOST,
     port: Number(process.env.EMAIL_PORT),
@@ -10,8 +12,7 @@ export const sendEmail = async (email: string) => {
       pass: process.env.PASS
     }
   })
-  const temporaryPassword = crypto.randomBytes(4).toString('hex')
-  await transporter
+  return await transporter
     .sendMail({
       from: `ALECTRION ADMIN <alectriontest@gmail.com>`,
       to: email,
@@ -55,9 +56,9 @@ export const sendEmail = async (email: string) => {
     })
     .then(() => {
       console.log('EMAIL ENVIADO COM SUCESSO')
+      return true
     })
-
-  module.exports = {
-    transporter
-  }
+    .catch(() => {
+      return false
+    })
 }
