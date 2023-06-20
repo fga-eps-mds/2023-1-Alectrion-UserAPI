@@ -16,7 +16,7 @@ export class MailerAdapter implements MailService {
     })
     return await transporter
       .sendMail({
-        from: `ALECTRION ADMIN <alectriontest@gmail.com>`,
+        from: `ALECTRION ADMIN <${process.env.USER}>`,
         to: email,
         subject: 'Senha temporária Alectrion',
         html: `
@@ -57,7 +57,6 @@ export class MailerAdapter implements MailService {
     </html>`
       })
       .then(() => {
-        console.log('EMAIL ENVIADO COM SUCESSO')
         return true
       })
       .catch(() => {
