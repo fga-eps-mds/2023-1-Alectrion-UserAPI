@@ -21,6 +21,8 @@ type Model =
       name: string
       role: string
       job: string
+      cpf: string
+      id?: string
     }
 
 export class AuthenticationUserController extends Controller {
@@ -30,6 +32,7 @@ export class AuthenticationUserController extends Controller {
 
   async perform(params: HttpRequest): Promise<HttpResponse<Model>> {
     const response = await this.authenticateUserUseCase.execute(params)
+    console.log(response.data);
     if (response.isSuccess && response.data) {
       return ok(response.data)
     } else {

@@ -31,6 +31,8 @@ export class AuthenticateUserUseCase
       name: string
       role: string
       job: string
+      cpf: string
+      id?: string
     }>
 {
   constructor(
@@ -47,6 +49,8 @@ export class AuthenticateUserUseCase
       name: string
       role: string
       job: string
+      cpf: string
+      id?: string
     }>
   > {
     let userFound = null
@@ -81,7 +85,9 @@ export class AuthenticateUserUseCase
         email: userFound.email,
         name: userFound.name,
         role: userFound.role,
-        job: userFound.job
+        job: userFound.job,
+        cpf: userFound.cpf,
+        id: userFound.id
       }
     }
   }
