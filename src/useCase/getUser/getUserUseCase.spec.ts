@@ -15,6 +15,8 @@ const mockedUser: User = {
 
   username: datatype.string(),
 
+  cpf: datatype.string(),
+
   job: Job.DELEGADO,
 
   role: Role.ADMIN,

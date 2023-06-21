@@ -21,6 +21,7 @@ const mockedUser: User = {
   name: datatype.string(),
   email: datatype.string(),
   username: datatype.string(),
+  cpf: datatype.string(),
   job: Job.DELEGADO,
   role: Role.ADMIN,
   password: datatype.string(),

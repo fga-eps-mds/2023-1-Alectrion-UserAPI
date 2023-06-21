@@ -19,6 +19,7 @@ describe('Should test use case create user', () => {
     name: datatype.string(),
     email: `${datatype.string()}@t.com`,
     username: datatype.string(),
+    cpf: datatype.string(),
     jobFunction: 'GENERICO',
     role: 'BASICO',
     password: datatype.string()
@@ -38,7 +39,8 @@ describe('Should test use case create user', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       job: Job.GENERICO,
-      role: Role.ADMIN
+      role: Role.ADMIN,
+      cpf: datatype.string()
     })
   })
 
@@ -53,6 +55,7 @@ describe('Should test use case create user', () => {
     userRepository.findOneByEmail.mockResolvedValueOnce({
       name: datatype.string(),
       email: `${datatype.string()}@t.com`,
+      cpf: datatype.string(),
       username: datatype.string(),
       password: 'any_password',
       id: 'any_email',
@@ -74,6 +77,7 @@ describe('Should test use case create user', () => {
     userRepository.findOneByUsername.mockResolvedValueOnce({
       name: datatype.string(),
       email: `${datatype.string()}@t.com`,
+      cpf: datatype.string(),
       username: datatype.string(),
       password: 'any_password',
       id: 'any_email',
