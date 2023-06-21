@@ -2,17 +2,21 @@ version: '3.7'
 
 services:
   db:
-    image: 'postgres'
-    env_file:
-      - db.env
+    image: 'postgres:latest'
+    restart: always
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=user
+    ports:
+      - 5432:5432
     volumes:
       - ./data:/var/lib/postgresql/data
     networks:
       - alectrion-user-network
+      - alectrion-network
 
   user_api:
-    depends_on:
-      - db
     build: .
     env_file:
       - .env
@@ -23,7 +27,9 @@ services:
       - alectrion-network
     ports:
       - 4001:4001
-    command: bash -c "yarn && yarn migration:run && yarn dev"
+    command: bash -c "while !</dev/tcp/db/5432; do sleep 1; done; yarn & yarn prisma migrate dev init && yarn dev"
+    depends_on:
+      - db
 
 networks:
   alectrion-user-network:
