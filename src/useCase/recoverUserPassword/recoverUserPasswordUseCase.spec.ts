@@ -27,6 +27,7 @@ const foundUser = {
   email: 'carlos@gmail.com',
   username: 'carlao',
   job: Job.AGENTE_POLICIA,
+  cpf: '1231',
   password: '1234',
   role: Role.BASICO,
   createdAt: new Date(),
