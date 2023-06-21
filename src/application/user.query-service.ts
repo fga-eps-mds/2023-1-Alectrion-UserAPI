@@ -5,4 +5,5 @@ export interface UserQueryService {
   findAll(authorId: string): Promise<Array<User>>
   findById(authorId: string, userId: string): Promise<User>
   authenticate(credential: Credential): Promise<User>
+  validate(userId: string, key: string): Promise<boolean>
 }

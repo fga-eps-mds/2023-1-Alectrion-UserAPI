@@ -5,7 +5,6 @@ import { UserDoNotExistsError } from '../domain/error/permission.user-do-not-exi
 import { WrongPasswordError } from '../domain/error/permission.wrong-password.error'
 import { UserRepository } from '../domain/repository/user.repository'
 import { EncrypteService } from '../infrastructure/service/encrypte.service'
-import { OperationType } from '../shared/permission/operation-type.permission'
 import { UserPermission } from './permission/user.permission'
 import { UserQueryService } from './user.query-service'
 
@@ -17,17 +16,13 @@ export class StandardUserQueryService implements UserQueryService {
   ) {}
 
   public async findAll(authorId: string): Promise<User[]> {
-    if (this.userPermission.hasPermission(authorId, OperationType.READ_USER)) {
-      throw new AccessForbiddenError()
-    }
+    this.userPermission.toRead(authorId)
 
     return await this.userRepository.findAllWithIsDeletedFalse()
   }
 
   public async findById(authorId: string, userId: string): Promise<User> {
-    if (this.userPermission.hasPermission(authorId, OperationType.READ_USER)) {
-      throw new AccessForbiddenError()
-    }
+    this.userPermission.toRead(authorId)
 
     return await this.userRepository.findByIdAndIsDeletedFalse(userId)
   }
@@ -51,5 +46,12 @@ export class StandardUserQueryService implements UserQueryService {
     }
 
     return user
+  }
+
+  public async validate(userId: string, key: string): Promise<boolean> {
+    if (key !== process.env.KEY_JWT) {
+      throw new AccessForbiddenError()
+    }
+    return this.userRepository.existsByUserId(userId)
   }
 }
