@@ -10,6 +10,7 @@ export class GetUserError extends Error {
 }
 
 export interface FindUserInput {
+  password?: string
   userName?: string
   email?: string
   userId?: string

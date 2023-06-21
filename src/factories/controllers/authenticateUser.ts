@@ -3,4 +3,5 @@ import { AuthenticationUserController } from '../../presentation/controller/auth
 
 export const makeAuthenticateUserController = () => {
   return new AuthenticationUserController(makeAuthenticationUser())
+  
 }

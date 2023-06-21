@@ -27,7 +27,9 @@ describe('AuthenticateUserController', () => {
         email: datatype.string(),
         name: datatype.string(),
         role: datatype.string(),
-        job: datatype.string()
+        job: datatype.string(),
+        cpf: datatype.string(),
+        id: datatype.string()
       }
     }
     authenticateUserUseCaseMocked.execute.mockResolvedValue(useCaseReponseMock)

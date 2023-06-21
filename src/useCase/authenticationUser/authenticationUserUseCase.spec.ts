@@ -56,7 +56,9 @@ describe('Authentication use case', () => {
         email: mockedUser.email,
         name: mockedUser.name,
         role: mockedUser.role,
-        job: mockedUser.job
+        job: mockedUser.job,
+        cpf: mockedUser.cpf,
+        id: mockedUser.id
       }
     }
 
@@ -118,7 +120,9 @@ describe('Authentication use case', () => {
         email: mockedUser.email,
         name: mockedUser.name,
         role: mockedUser.role,
-        job: mockedUser.job
+        job: mockedUser.job,
+        cpf: mockedUser.cpf,
+        id: mockedUser.id
       }
     }
 
