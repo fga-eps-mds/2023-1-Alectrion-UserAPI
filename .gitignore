@@ -1,6 +1,5 @@
 node_modules
 coverage
-.env
 db.env
 data
 dist
