@@ -4,14 +4,13 @@ import { User } from '../../../domain/entity/user'
 import { UserResource } from '../user-resource'
 
 export class UserResourceConverter {
-  public mapUserToUserResource(user: User): UserResource {
+  public mapTo(user: User): UserResource {
     const userResource = new UserResource()
 
     userResource.setId(user.getId())
     userResource.setCpf(user.getCpf())
     userResource.setUsername(user.getUsername())
     userResource.setName(user.getName())
-    userResource.setPassword(user.getPassword())
     userResource.setEmail(user.getEmail())
     userResource.setJob(user.getJob())
     userResource.setRole(user.getRole())
@@ -21,7 +20,7 @@ export class UserResourceConverter {
     return userResource
   }
 
-  public mapUserResourceToUser(userResource: UserResource): User {
+  public mapFrom(userResource: UserResource): User {
     const user = new User()
 
     user.setId(userResource.getId())

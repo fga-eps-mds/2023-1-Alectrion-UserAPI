@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { UserService } from '../../application/user.service'
 import { UserQueryService } from '../../application/user.query-service'
 import { UserResource } from '../resource/user-resource'
@@ -7,6 +7,8 @@ import { UserResourceConverter } from '../resource/converter/user-resource.conve
 import { CredentialResource } from '../resource/credential-resource'
 import { CredentialResourceConverter } from '../resource/converter/credential-resource.converter'
 import { TokenGeneratorService } from '../../infrastructure/service/token-generator.service'
+import { NewCredentialResource } from '../resource/new-credential-resource'
+import { NewCredentialResourceConverter } from '../resource/converter/new-credential-resource.converter'
 
 export class UserController {
   public constructor(
@@ -14,7 +16,8 @@ export class UserController {
     private readonly userQueryService: UserQueryService,
     private readonly userResouceConvert: UserResourceConverter,
     private readonly credentialResourceConverter: CredentialResourceConverter,
-    private readonly tokenGenaratorService: TokenGeneratorService
+    private readonly tokenGenaratorService: TokenGeneratorService,
+    private readonly newCredentialResourceConverter: NewCredentialResourceConverter
   ) {}
 
   public async register(
@@ -24,10 +27,10 @@ export class UserController {
     return response
       .status(201)
       .send(
-        this.userResouceConvert.mapUserToUserResource(
+        this.userResouceConvert.mapTo(
           await this.userService.save(
             request.params.authorId,
-            this.userResouceConvert.mapUserResourceToUser(request.body)
+            this.userResouceConvert.mapFrom(request.body)
           )
         )
       )
@@ -40,10 +43,10 @@ export class UserController {
     return response
       .status(200)
       .send(
-        this.userResouceConvert.mapUserToUserResource(
+        this.userResouceConvert.mapTo(
           await this.userService.update(
             request.params.authorId,
-            this.userResouceConvert.mapUserResourceToUser(request.body)
+            this.userResouceConvert.mapFrom(request.body)
           )
         )
       )
@@ -72,11 +75,7 @@ export class UserController {
       .send(
         await this.userQueryService
           .findAll(request.params.authorId)
-          .then((it) =>
-            it.map((elem) =>
-              this.userResouceConvert.mapUserToUserResource(elem)
-            )
-          )
+          .then((it) => it.map((elem) => this.userResouceConvert.mapTo(elem)))
       )
   }
 
@@ -87,7 +86,7 @@ export class UserController {
     return response
       .status(200)
       .send(
-        this.userResouceConvert.mapUserToUserResource(
+        this.userResouceConvert.mapTo(
           await this.userQueryService.findById(
             request.params.authorId,
             request.params.userId
@@ -101,16 +100,39 @@ export class UserController {
     response: Response<UserResource>
   ): Promise<Response<UserResource>> {
     const user = await this.userQueryService.authenticate(
-      this.credentialResourceConverter.mapCredentialResourceToCredential(
-        request.body
-      )
+      this.credentialResourceConverter.mapFrom(request.body)
     )
     return response
       .status(200)
-      .send(this.userResouceConvert.mapUserToUserResource(user))
+      .send(this.userResouceConvert.mapTo(user))
       .setHeader(
         'Authorization',
         'Bearer ' + this.tokenGenaratorService.generateToken(user.getId())
+      )
+  }
+
+  public async updatePassword(
+    request: CustomRequest<NewCredentialResource>,
+    response: Response<UserResource>
+  ): Promise<Response> {
+    await this.userService.updatePassword(
+      request.params.authorId,
+      this.newCredentialResourceConverter.mapFrom(request.body)
+    )
+    return response.status(200)
+  }
+
+  public async validate(
+    request: Request,
+    response: Response<boolean>
+  ): Promise<Response<boolean>> {
+    return response
+      .status(200)
+      .send(
+        await this.userQueryService.validate(
+          request.params.userId,
+          request.params.key
+        )
       )
   }
 }
