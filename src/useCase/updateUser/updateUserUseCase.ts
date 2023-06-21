@@ -10,6 +10,7 @@ export interface UpdateUserData {
   jobFunction?: string
   role?: string
   password?: string
+  temporaryPassword?: boolean
 }
 
 export class UpdateUserError extends Error {
@@ -28,7 +29,6 @@ export class UpdateUserUseCase implements UseCase<{ message: string }> {
   async execute(
     userUpdate: UpdateUserData
   ): Promise<UseCaseReponse<{ message: string }>> {
-
     if (userUpdate.password !== undefined) {
       const hashedPassword = this.encryptor.encrypt(userUpdate.password)
       await this.userRepository.updateOne({
@@ -36,9 +36,9 @@ export class UpdateUserUseCase implements UseCase<{ message: string }> {
         password: hashedPassword
       })
       return { isSuccess: true, data: { message: 'Usuário atualizado!' } }
-    } else {      
+    } else {
       return (await this.userRepository.updateOne({
-        ...userUpdate,
+        ...userUpdate
       }))
         ? { isSuccess: true, data: { message: 'Usuário atualizado!' } }
         : {

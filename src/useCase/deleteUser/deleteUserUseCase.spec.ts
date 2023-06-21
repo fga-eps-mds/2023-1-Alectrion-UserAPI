@@ -33,7 +33,9 @@ const mockedUser: User = {
 
   createdAt: new Date(),
 
-  updatedAt: new Date()
+  updatedAt: new Date(),
+
+  temporaryPassword: false
 }
 
 describe('Should test conditions for soft delete', () => {

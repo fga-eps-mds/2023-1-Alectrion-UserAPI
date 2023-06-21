@@ -40,7 +40,8 @@ describe('Should test use case create user', () => {
       updatedAt: new Date(),
       job: Job.GENERICO,
       role: Role.ADMIN,
-      cpf: datatype.string()
+      cpf: datatype.string(),
+      temporaryPassword: false
     })
   })
 
@@ -62,7 +63,8 @@ describe('Should test use case create user', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       job: Job.GENERICO,
-      role: Role.ADMIN
+      role: Role.ADMIN,
+      temporaryPassword: false
     })
 
     const result = await sut.execute(body)
@@ -84,7 +86,8 @@ describe('Should test use case create user', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       job: Job.GENERICO,
-      role: Role.ADMIN
+      role: Role.ADMIN,
+      temporaryPassword: false
     })
 
     const result = await sut.execute(body)

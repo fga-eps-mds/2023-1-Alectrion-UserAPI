@@ -55,6 +55,12 @@ export class User {
 
   @Column({
     type: 'boolean',
+    default: true
+  })
+  temporaryPassword: boolean
+
+  @Column({
+    type: 'boolean',
     default: false
   })
   isDeleted?: boolean

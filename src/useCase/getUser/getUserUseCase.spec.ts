@@ -25,7 +25,9 @@ const mockedUser: User = {
 
   createdAt: new Date(),
 
-  updatedAt: new Date()
+  updatedAt: new Date(),
+
+  temporaryPassword: false
 }
 
 const repositoryMocked = mock<Repository>()

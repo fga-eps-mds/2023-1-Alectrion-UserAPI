@@ -26,5 +26,7 @@ export type User = {
 
   deletedAt?: Date
 
+  temporaryPassword: boolean
+
   isDeleted?: boolean
 }
