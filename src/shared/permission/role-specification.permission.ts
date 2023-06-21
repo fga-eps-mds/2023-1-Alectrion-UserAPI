@@ -10,15 +10,6 @@ export class RoleSpecification {
     OperationType.READ_USER
   ])
 
-  public static MANAGER_PERMISSIONS = new PermissionSpecification(
-    Role.MANAGER,
-    [
-      OperationType.CREATE_USER,
-      OperationType.UPDATE_USER,
-      OperationType.READ_USER
-    ]
-  )
-
   public static BASIC_PERMISSIONS = new PermissionSpecification(Role.BASIC, [
     OperationType.UPDATE_USER,
     OperationType.READ_USER
@@ -30,7 +21,6 @@ export class RoleSpecification {
 
   public static PERMISSIONS: Array<PermissionSpecification> = [
     this.ADMIN_PERMISSIONS,
-    this.MANAGER_PERMISSIONS,
     this.BASIC_PERMISSIONS,
     this.VIEWER_PERMISSIONS
   ]
