@@ -1,3 +1,3 @@
-export interface Token {
-  generateToken(payload: object, secret: any, options: object): string
+export interface TokenService {
+  generateToken(payload: string): string
 }

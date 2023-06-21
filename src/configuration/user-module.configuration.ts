@@ -14,9 +14,13 @@ import { CredentialResourceConverter } from '../presentation/resource/converter/
 import { TokenGeneratorService } from '../infrastructure/service/token-generator.service'
 import { PrismaUserRepository } from '../infrastructure/database/prisma-user.repository'
 import { PrismaClient } from '@prisma/client'
+import { UserCredentialValidation } from '../application/validation/user-credential.validation'
+import { NewCredentialResourceConverter } from '../presentation/resource/converter/new-credential-resource.converter'
+import { UserDataMapper } from '../infrastructure/database/datamapper/user.datamapper'
 
 const userRepository: UserRepository = new PrismaUserRepository(
-  new PrismaClient()
+  new PrismaClient(),
+  new UserDataMapper()
 )
 const userPermission: UserPermission = new UserPermission(userRepository)
 const userCreationValidation: UserCreationValidation =
@@ -25,11 +29,15 @@ const userUpdateValidation: UserUpdateValidation = new UserUpdateValidation(
   userRepository
 )
 const encrypteService: EncrypteService = new BcryptService()
+const userCredentialValidation: UserCredentialValidation =
+  new UserCredentialValidation(userRepository, encrypteService)
 const userService: UserService = new StandardUserService(
   userRepository,
   userPermission,
   userCreationValidation,
-  userUpdateValidation
+  userUpdateValidation,
+  userCredentialValidation,
+  encrypteService
 )
 const userQueryService: UserQueryService = new StandardUserQueryService(
   userRepository,
@@ -40,11 +48,14 @@ const userResouceConvert: UserResourceConverter = new UserResourceConverter()
 const credentialResourceConverter: CredentialResourceConverter =
   new CredentialResourceConverter()
 const tokenGenaratorService: TokenGeneratorService = new TokenGeneratorService()
+const newCredentialResourceConverter: NewCredentialResourceConverter =
+  new NewCredentialResourceConverter()
 
 export const userController = new UserController(
   userService,
   userQueryService,
   userResouceConvert,
   credentialResourceConverter,
-  tokenGenaratorService
+  tokenGenaratorService,
+  newCredentialResourceConverter
 )

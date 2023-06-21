@@ -11,6 +11,8 @@ enum Role {
     MANAGER
     BASIC
     VIEWER
+
+    @@map("role")
 }
 
 enum Job {
@@ -23,6 +25,8 @@ enum Job {
     INTERN
     SUPERINTENDENT
     SECTION_CHIEF 
+
+    @@map("job")
 }
 
 model User {
