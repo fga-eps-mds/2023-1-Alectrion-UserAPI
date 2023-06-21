@@ -8,12 +8,13 @@ export class UserCreationValidation extends UserValidation {
     super(userRepository)
   }
 
-  public validateCreation(user: User): void {
+  public async validateCreation(user: User): Promise<void> {
     this.validate(user)
 
-    const possibleUser = this.userRespository.findByUsernameAndIsDeletedFalse(
-      user.getUsername()
-    )
+    const possibleUser =
+      await this.userRespository.findByUsernameAndIsDeletedFalse(
+        user.getUsername()
+      )
     if (possibleUser !== null) {
       throw new UserAlreadyExistsError()
     }
