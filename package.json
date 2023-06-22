@@ -8,9 +8,9 @@
     "build": "npm run clean && tsc -p tsconfig.json",
     "typeorm": "ts-node-dev node_modules/.bin/typeorm",
     "db:seed": "ts-node-dev node_modules/typeorm-seeding/dist/cli.js seed",
-    "migration:generate": "npm run typeorm -- migration:generate src/db/migrations/default -d src/db/config.ts",
-    "migration:run": "npm run typeorm -- migration:run -d src/db/config.ts",
-    "migration:revert": "npm run typeorm -- migration:revert -d src/db/config.ts",
+    "migration:generate": "typeorm-ts-node-commonjs -d ./src/infrastructure/database/config.ts migration:generate ./src/infrastructure/database/migrations/default",
+    "migration:run": "typeorm-ts-node-commonjs -d ./src/infrastructure/database/config.ts migration:run",
+    "migration:revert": "npm run typeorm -- migration:revert -d src/infrastructure/database/config.ts",
     "dev": "ts-node-dev -r dotenv/config --max_old_space_size=512 --respawn --transpile-only src/main.ts",
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "npm run test -- --watch",
@@ -58,7 +58,6 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@prisma/client": "^4.15.0",
     "@types/faker": "5.5.9",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
@@ -66,11 +65,7 @@
     "faker": "5.5.3",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.3",
-    "prisma": "^4.15.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.7"
-  },
-  "prisma": {
-    "schema": "./src/infrastructure/database/prisma/schema.prisma"
   }
 }
