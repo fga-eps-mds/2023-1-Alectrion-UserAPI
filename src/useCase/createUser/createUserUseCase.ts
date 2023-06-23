@@ -3,7 +3,6 @@ import { Repository } from '../../repository/protocol/repository'
 import { Encryptor } from '../../services/encryptor'
 import { Job } from '../../db/entities/userEnum/job'
 import { Role } from '../../db/entities/userEnum/role'
-import { create } from 'domain'
 
 export interface CreateUserData {
   name: string
@@ -11,15 +10,15 @@ export interface CreateUserData {
   username: string
   cpf: string
   jobFunction:
-  | 'DELEGADO'
-  | 'AGENTE_POLICIA'
-  | 'ESCRIVAO'
-  | 'COORDENADOR'
-  | 'CHEFE_SECAO'
-  | 'GENERICO'
-  | 'COMISSIONADO'
-  | 'ESTAGIARIO'
-  | 'SUPERINTENDENTE'
+    | 'DELEGADO'
+    | 'AGENTE_POLICIA'
+    | 'ESCRIVAO'
+    | 'COORDENADOR'
+    | 'CHEFE_SECAO'
+    | 'GENERICO'
+    | 'COMISSIONADO'
+    | 'ESTAGIARIO'
+    | 'SUPERINTENDENTE'
   role: 'ADMIN' | 'GERENTE' | 'BASICO' | 'CONSULTA'
   password: string
 }
@@ -49,7 +48,6 @@ export class CreateUserUseCase
   async execute(
     createUserData: CreateUserData
   ): Promise<UseCaseReponse<{ email: string; job: string }>> {
-    console.log("Cheguei")
     if (createUserData.email) {
       const userByEmail = await this.userRepository.findOneByEmail(
         createUserData.email

@@ -5,20 +5,20 @@ import { Token } from '../../services/tokenGenerator'
 
 export class LoginUsernameError extends Error {
   constructor() {
-    super('username nao existente no banco!')
+    super('Seu usuário não pôde ser encontrado')
     this.name = 'LoginUsernameError'
   }
 }
 
 export class LoginPasswordError extends Error {
   constructor() {
-    super('senha incorreta no banco!')
+    super('Senha incorreta')
     this.name = 'LoginPasswordError'
   }
 }
 
 export interface DataUserLogin {
-  username: string
+  identifier: string
   password: string
 }
 
@@ -51,10 +51,13 @@ export class AuthenticateUserUseCase
       job: string
       cpf: string
       id?: string
+      temporaryPassword: boolean
     }>
   > {
     let userFound = null
-    userFound = await this.userRepository.findToAuthenticate(userData.username)
+    userFound = await this.userRepository.findToAuthenticate(
+      userData.identifier
+    )
 
     if (!userFound) {
       return { isSuccess: false, error: new LoginUsernameError() }
@@ -87,7 +90,8 @@ export class AuthenticateUserUseCase
         role: userFound.role,
         job: userFound.job,
         cpf: userFound.cpf,
-        id: userFound.id
+        id: userFound.id,
+        temporaryPassword: userFound.temporaryPassword
       }
     }
   }

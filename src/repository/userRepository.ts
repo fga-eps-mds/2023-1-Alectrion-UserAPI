@@ -12,7 +12,11 @@ class UserRepository implements Repository {
 
   async findToAuthenticate(userInput: string): Promise<User> {
     const userPassword = await this.userRepository.find({
-      where: [{ username: userInput }, { email: userInput }], // Encontrando o usuário pelo nome ou email.
+      where: [
+        { username: userInput },
+        { email: userInput },
+        { cpf: userInput }
+      ], // Encontrando o usuário pelo nome ou email ou cpf.
       select: ['password', 'email', 'name', 'id', 'role', 'job', 'cpf'] // Retornando somente o que está entre as chaves.
     })
     return userPassword[0]
