@@ -17,49 +17,37 @@ export class LoginPasswordError extends Error {
   }
 }
 
+export interface DataUserResponse {
+  token: string
+  expireIn: string
+  email: string
+  name: string
+  role: string
+  job: string
+  cpf: string
+  id?: string
+  temporaryPassword: boolean
+}
 export interface DataUserLogin {
   identifier: string
   password: string
 }
 
-export class AuthenticateUserUseCase
-  implements
-    UseCase<{
-      token: string
-      expireIn: string
-      email: string
-      name: string
-      role: string
-      job: string
-      cpf: string
-      id?: string
-      temporaryPassword: boolean
-    }>
-{
+export class AuthenticateUserUseCase implements UseCase<DataUserResponse> {
   constructor(
     private readonly userRepository: Repository,
     private readonly encryptor: Encryptor,
     private readonly token: Token
   ) {}
 
-  async execute(userData: DataUserLogin): Promise<
-    UseCaseReponse<{
-      token: string
-      expireIn: string
-      email: string
-      name: string
-      role: string
-      job: string
-      cpf: string
-      id?: string
-      temporaryPassword: boolean
-    }>
-  > {
+  async execute(
+    userData: DataUserLogin
+  ): Promise<UseCaseReponse<DataUserResponse>> {
     let userFound = null
     userFound = await this.userRepository.findToAuthenticate(
       userData.identifier
     )
-    console.log(userFound)
+
     if (!userFound) {
       return { isSuccess: false, error: new LoginUsernameError() }
     }
@@ -92,7 +80,7 @@ export class AuthenticateUserUseCase
         job: userFound.job,
         cpf: userFound.cpf,
         id: userFound.id,
-        temporaryPassword: userFound.temporaryPassword
+        temporaryPassword: userFound.temporarypassword
       }
     }
   }

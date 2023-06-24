@@ -39,6 +39,13 @@ export class CreateUserError extends Error {
   }
 }
 
+export class EmailNotSentError extends Error {
+  constructor() {
+    super('Não foi possível enviar o e-mail de recuperação de senha.')
+    this.name = 'EmailNotSentError'
+  }
+}
+
 export class CreateUserUseCase
   implements UseCase<{ email: string; job: string }>
 {
@@ -73,9 +80,7 @@ export class CreateUserUseCase
       }
     }
 
-    const userByCpf = await this.userRepository.findOneByUsername(
-      createUserData.cpf
-    )
+    const userByCpf = await this.userRepository.findOneByCpf(createUserData.cpf)
     if (userByCpf !== undefined) {
       return {
         isSuccess: false,
@@ -88,7 +93,15 @@ export class CreateUserUseCase
       userPassword = createUserData.password
     } else {
       userPassword = crypto.randomBytes(4).toString('hex')
-      this.mailer.sendRecoverPasswordEmail(createUserData.email, userPassword)
+      const sent = await this.mailer.sendRecoverPasswordEmail(
+        createUserData.email,
+        userPassword
+      )
+      if (!sent)
+        return {
+          isSuccess: false,
+          error: new EmailNotSentError()
+        }
     }
 
     const hashedPassword = this.encryptor.encrypt(userPassword)

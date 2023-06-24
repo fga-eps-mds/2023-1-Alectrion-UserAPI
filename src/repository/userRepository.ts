@@ -25,7 +25,7 @@ class UserRepository implements Repository {
         'role',
         'job',
         'cpf',
-        'temporaryPassword'
+        'temporarypassword'
       ] // Retornando somente o que está entre as chaves.
     })
     return userPassword[0]
@@ -125,7 +125,7 @@ class UserRepository implements Repository {
       cpf,
       job: job ?? Job.GENERICO,
       role: role ?? Role.BASICO,
-      temporaryPassword
+      temporarypassword: temporaryPassword
     })
     await this.userRepository.save(user)
     return user
