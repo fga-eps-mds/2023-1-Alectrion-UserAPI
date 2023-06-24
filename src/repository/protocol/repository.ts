@@ -11,6 +11,7 @@ export interface Repository {
     job: Job
     role: Role
     password: string
+    temporaryPassword: boolean
   }): Promise<User | undefined>
   updateOne(userData: any): Promise<boolean>
   deleteOne(userId: string): Promise<void>

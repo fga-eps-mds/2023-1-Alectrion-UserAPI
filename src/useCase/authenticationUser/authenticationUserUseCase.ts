@@ -33,6 +33,7 @@ export class AuthenticateUserUseCase
       job: string
       cpf: string
       id?: string
+      temporaryPassword: boolean
     }>
 {
   constructor(
@@ -58,7 +59,7 @@ export class AuthenticateUserUseCase
     userFound = await this.userRepository.findToAuthenticate(
       userData.identifier
     )
-
+    console.log(userFound)
     if (!userFound) {
       return { isSuccess: false, error: new LoginUsernameError() }
     }

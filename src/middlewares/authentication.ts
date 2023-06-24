@@ -22,7 +22,7 @@ export function IsUserAuthenticated(
 
   const [, token] = authToken.split(' ')
   try {
-    const { role } = verify(token, secret) as PayLoad
+    verify(token, secret) as PayLoad
     return next()
   } catch (error) {
     return res.status(401).json({ error: 'Token de autenticação inválido' })

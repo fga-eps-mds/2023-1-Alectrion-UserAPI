@@ -3,6 +3,8 @@ import { Repository } from '../../repository/protocol/repository'
 import { Encryptor } from '../../services/encryptor'
 import { Job } from '../../db/entities/userEnum/job'
 import { Role } from '../../db/entities/userEnum/role'
+import { MailerAdapter } from '../../adapters/mailerAdapter'
+import crypto from 'crypto'
 
 export interface CreateUserData {
   name: string
@@ -20,7 +22,7 @@ export interface CreateUserData {
     | 'ESTAGIARIO'
     | 'SUPERINTENDENTE'
   role: 'ADMIN' | 'GERENTE' | 'BASICO' | 'CONSULTA'
-  password: string
+  password?: string
 }
 
 export class UserAlreadyExistsError extends Error {
@@ -42,7 +44,8 @@ export class CreateUserUseCase
 {
   constructor(
     private readonly encryptor: Encryptor,
-    private readonly userRepository: Repository
+    private readonly userRepository: Repository,
+    private readonly mailer: MailerAdapter
   ) {}
 
   async execute(
@@ -79,7 +82,16 @@ export class CreateUserUseCase
         error: new UserAlreadyExistsError('Cpf já utilizado')
       }
     }
-    const hashedPassword = this.encryptor.encrypt(createUserData.password)
+
+    let userPassword
+    if (createUserData.password) {
+      userPassword = createUserData.password
+    } else {
+      userPassword = crypto.randomBytes(4).toString('hex')
+      this.mailer.sendRecoverPasswordEmail(createUserData.email, userPassword)
+    }
+
+    const hashedPassword = this.encryptor.encrypt(userPassword)
 
     const user = await this.userRepository.createUser({
       name: createUserData.name,
@@ -88,7 +100,8 @@ export class CreateUserUseCase
       cpf: createUserData.cpf,
       username: createUserData.username,
       job: Job[createUserData.jobFunction],
-      role: Role[createUserData.role]
+      role: Role[createUserData.role],
+      temporaryPassword: createUserData.role !== 'CONSULTA'
     })
 
     if (user !== undefined) {

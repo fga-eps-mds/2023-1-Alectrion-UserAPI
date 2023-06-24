@@ -17,7 +17,16 @@ class UserRepository implements Repository {
         { email: userInput },
         { cpf: userInput }
       ], // Encontrando o usuário pelo nome ou email ou cpf.
-      select: ['password', 'email', 'name', 'id', 'role', 'job', 'cpf'] // Retornando somente o que está entre as chaves.
+      select: [
+        'password',
+        'email',
+        'name',
+        'id',
+        'role',
+        'job',
+        'cpf',
+        'temporaryPassword'
+      ] // Retornando somente o que está entre as chaves.
     })
     return userPassword[0]
   }
@@ -95,8 +104,18 @@ class UserRepository implements Repository {
     job: Job
     role: Role
     password: string
+    temporaryPassword: boolean
   }): Promise<User | undefined> {
-    const { name, email, password, username, cpf, job, role } = params
+    const {
+      name,
+      email,
+      password,
+      username,
+      cpf,
+      job,
+      role,
+      temporaryPassword
+    } = params
 
     const user = this.userRepository.create({
       name,
@@ -105,9 +124,9 @@ class UserRepository implements Repository {
       username,
       cpf,
       job: job ?? Job.GENERICO,
-      role: role ?? Role.BASICO
+      role: role ?? Role.BASICO,
+      temporaryPassword
     })
-
     await this.userRepository.save(user)
     return user
   }
