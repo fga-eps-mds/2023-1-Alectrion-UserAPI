@@ -55,7 +55,7 @@ export class CreateUserUseCase
       if (userByEmail !== undefined) {
         return {
           isSuccess: false,
-          error: new UserAlreadyExistsError('email já utilizado')
+          error: new UserAlreadyExistsError('Email já utilizado')
         }
       }
     }
@@ -66,7 +66,17 @@ export class CreateUserUseCase
     if (userByUsername !== undefined) {
       return {
         isSuccess: false,
-        error: new UserAlreadyExistsError('username já utilizado')
+        error: new UserAlreadyExistsError('Username já utilizado')
+      }
+    }
+
+    const userByCpf = await this.userRepository.findOneByUsername(
+      createUserData.cpf
+    )
+    if (userByCpf !== undefined) {
+      return {
+        isSuccess: false,
+        error: new UserAlreadyExistsError('Cpf já utilizado')
       }
     }
     const hashedPassword = this.encryptor.encrypt(createUserData.password)

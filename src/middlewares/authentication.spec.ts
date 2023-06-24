@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { verify } from 'jsonwebtoken'
-import { IsUserAuthenticated } from './isUserAuthenticated'
+import { IsUserAuthenticated } from './authentication'
 
 // Mock the required dependencies and environment variables
 jest.mock('jsonwebtoken', () => ({

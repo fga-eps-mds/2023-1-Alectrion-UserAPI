@@ -76,6 +76,17 @@ class UserRepository implements Repository {
     return user
   }
 
+  async findOneByCpf(cpf: string): Promise<User | undefined> {
+    const user = await this.userRepository.findOneBy({
+      cpf,
+      isDeleted: false
+    })
+    if (!user) {
+      return undefined
+    }
+    return user
+  }
+
   async createUser(params: {
     name: string
     email: string
