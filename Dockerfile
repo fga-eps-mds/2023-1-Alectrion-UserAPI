@@ -10,8 +10,6 @@ RUN yarn
 
 COPY . /app
 
-RUN yarn build
-
 EXPOSE 4001
 
 CMD ["yarn", "dev"]
