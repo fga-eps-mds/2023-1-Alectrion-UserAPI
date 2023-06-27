@@ -2,18 +2,18 @@ import { Job } from './job'
 import { Role } from './role'
 
 export class User {
-  private id: string
-  private cpf: string
-  private username: string
-  private name: string
-  private password: string
-  private email: string
-  private job: Job
-  private role: Role
-  private isDeleted: boolean
-  private firstAccess: boolean
-  private createdAt: Date
-  private updatedAt: Date
+  public id: string
+  public cpf: string
+  public username: string
+  public name: string
+  public password: string
+  public email: string
+  public job: Job
+  public role: Role
+  public isDeleted: boolean
+  public firstAccess: boolean
+  public createdAt: Date
+  public updatedAt: Date
 
   public getId(): string {
     return this.id
