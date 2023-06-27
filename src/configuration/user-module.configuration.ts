@@ -12,16 +12,11 @@ import { StandardUserQueryService } from '../application/standard-user.query-ser
 import { UserResourceConverter } from '../presentation/resource/converter/user-resource.converter'
 import { CredentialResourceConverter } from '../presentation/resource/converter/credential-resource.converter'
 import { TokenGeneratorService } from '../infrastructure/service/token-generator.service'
-import { PrismaUserRepository } from '../infrastructure/database/prisma-user.repository'
-import { PrismaClient } from '@prisma/client'
 import { UserCredentialValidation } from '../application/validation/user-credential.validation'
 import { NewCredentialResourceConverter } from '../presentation/resource/converter/new-credential-resource.converter'
-import { UserDataMapper } from '../infrastructure/database/datamapper/user.datamapper'
+import { TypeormUserRepository } from '../infrastructure/database/typerorm-user.repository'
 
-const userRepository: UserRepository = new PrismaUserRepository(
-  new PrismaClient(),
-  new UserDataMapper()
-)
+const userRepository: UserRepository = new TypeormUserRepository()
 const userPermission: UserPermission = new UserPermission(userRepository)
 const userCreationValidation: UserCreationValidation =
   new UserCreationValidation(userRepository)

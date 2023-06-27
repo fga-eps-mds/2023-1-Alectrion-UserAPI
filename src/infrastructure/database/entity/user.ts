@@ -5,8 +5,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
-import { Job } from './userEnum/job'
-import { Role } from './userEnum/role'
+import { Job } from '../../../domain/entity/job'
+import { Role } from '../../../domain/entity/role'
 
 @Entity()
 export class User {
@@ -14,30 +14,45 @@ export class User {
   id?: string
 
   @Column()
-  name: string
-
-  @Column({ nullable: true, unique: true })
-  email: string
+  cpf: string
 
   @Column()
   username: string
 
+  @Column()
+  name: string
+
+  @Column()
+  password: string
+
+  @Column({ nullable: true, unique: true })
+  email: string
+
   @Column({
     type: 'enum',
     enum: Job,
-    default: Job.GENERICO
+    default: Job.GENERIC
   })
   job: Job
 
   @Column({
     type: 'enum',
     enum: Role,
-    default: Role.BASICO
+    default: Role.BASIC
   })
   role: Role
 
-  @Column({ select: false })
-  password: string
+  @Column({
+    type: 'boolean',
+    default: false
+  })
+  isDeleted?: boolean
+
+  @Column({
+    type: 'boolean',
+    default: true
+  })
+  firstAccess?: boolean
 
   @Column({ type: 'timestamptz' })
   @CreateDateColumn()
@@ -46,13 +61,4 @@ export class User {
   @Column({ type: 'timestamptz' })
   @UpdateDateColumn()
   updatedAt?: Date
-
-  @Column({ nullable: true })
-  deletedAt?: Date
-
-  @Column({
-    type: 'boolean',
-    default: false
-  })
-  isDeleted?: boolean
 }

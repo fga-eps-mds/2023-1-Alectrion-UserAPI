@@ -1,5 +1,5 @@
-import { Job } from '../../db/entities/userEnum/job'
-import { Role } from '../../db/entities/userEnum/role'
+import { Job } from '../../infrastructure/db/entities/userEnum/job'
+import { Role } from '../../infrastructure/db/entities/userEnum/role'
 import { User } from '../../domain/entities/user'
 
 export interface Repository {
