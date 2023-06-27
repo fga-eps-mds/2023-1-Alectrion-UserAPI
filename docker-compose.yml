@@ -29,7 +29,7 @@ services:
       - ./:/app
     ports:
       - '4001:4001'
-    command: bash -c "yarn && yarn migration:generate && yarn migration:run && yarn dev"
+    command: bash -c 'yarn && yarn migration:run && yarn dev'
     networks:
       - alectrion-user-network
       - alectrion-network

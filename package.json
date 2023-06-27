@@ -11,6 +11,7 @@
     "migration:generate": "typeorm-ts-node-commonjs -d ./src/infrastructure/database/config.ts migration:generate ./src/infrastructure/database/migrations/default",
     "migration:run": "typeorm-ts-node-commonjs -d ./src/infrastructure/database/config.ts migration:run",
     "migration:revert": "npm run typeorm -- migration:revert -d src/infrastructure/database/config.ts",
+    "data:clean": "sudo rm -R data/ ./src/infrastructure/database/migrations/*",
     "dev": "ts-node-dev -r dotenv/config --max_old_space_size=512 --respawn --transpile-only src/main.ts",
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "npm run test -- --watch",
