@@ -2,8 +2,8 @@ import { GetUserUseCase, GetUserError } from './getUserUseCase'
 import { mock } from 'jest-mock-extended'
 import { Repository } from '../../repository/protocol/repository'
 import { User } from '../../domain/entities/user'
-import { Job } from '../../db/entities/userEnum/job'
-import { Role } from '../../db/entities/userEnum/role'
+import { Job } from '../../infrastructure/db/entities/userEnum/job'
+import { Role } from '../../infrastructure/db/entities/userEnum/role'
 import { datatype } from 'faker'
 
 const mockedUser: User = {

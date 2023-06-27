@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { verify } from 'jsonwebtoken'
-import { Role } from '../db/entities/userEnum/role'
+import { Role } from '../infrastructure/db/entities/userEnum/role'
 
 export class NotAdminError extends Error {
   constructor() {

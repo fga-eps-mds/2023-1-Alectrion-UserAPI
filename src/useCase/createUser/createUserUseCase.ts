@@ -1,23 +1,23 @@
 import { UseCase, UseCaseReponse } from '../protocols/useCase'
 import { Repository } from '../../repository/protocol/repository'
 import { Encryptor } from '../../infrastructure/service/encrypte.service'
-import { Job } from '../../db/entities/userEnum/job'
-import { Role } from '../../db/entities/userEnum/role'
+import { Job } from '../../infrastructure/db/entities/userEnum/job'
+import { Role } from '../../infrastructure/db/entities/userEnum/role'
 
 export interface CreateUserData {
   name: string
   email: string
   username: string
   jobFunction:
-  | 'DELEGADO'
-  | 'AGENTE_POLICIA'
-  | 'ESCRIVAO'
-  | 'COORDENADOR'
-  | 'CHEFE_SECAO'
-  | 'GENERICO'
-  | 'COMISSIONADO'
-  | 'ESTAGIARIO'
-  | 'SUPERINTENDENTE'
+    | 'DELEGADO'
+    | 'AGENTE_POLICIA'
+    | 'ESCRIVAO'
+    | 'COORDENADOR'
+    | 'CHEFE_SECAO'
+    | 'GENERICO'
+    | 'COMISSIONADO'
+    | 'ESTAGIARIO'
+    | 'SUPERINTENDENTE'
   role: 'ADMIN' | 'GERENTE' | 'BASICO' | 'CONSULTA'
   password: string
 }

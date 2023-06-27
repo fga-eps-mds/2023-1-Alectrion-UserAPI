@@ -1,7 +1,7 @@
 import { datatype } from 'faker'
 import { mock } from 'jest-mock-extended'
-import { Job } from '../../db/entities/userEnum/job'
-import { Role } from '../../db/entities/userEnum/role'
+import { Job } from '../../infrastructure/db/entities/userEnum/job'
+import { Role } from '../../infrastructure/db/entities/userEnum/role'
 import { User } from '../../domain/entities/user'
 import { Repository } from '../../repository/protocol/repository'
 import {

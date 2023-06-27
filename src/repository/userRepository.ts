@@ -1,7 +1,7 @@
-import { dataSource } from '../db/config'
-import { User } from '../db/entities/user'
-import { Role } from '../db/entities/userEnum/role'
-import { Job } from '../db/entities/userEnum/job'
+import { dataSource } from '../infrastructure/database/config'
+import { User } from '../infrastructure/database/entity/user'
+import { Role } from '../infrastructure/db/entities/userEnum/role'
+import { Job } from '../infrastructure/db/entities/userEnum/job'
 import { Repository } from './protocol/repository'
 
 class UserRepository implements Repository {

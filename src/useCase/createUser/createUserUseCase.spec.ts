@@ -8,8 +8,8 @@ import { MockProxy, mock } from 'jest-mock-extended'
 import { Encryptor } from '../../infrastructure/service/encrypte.service'
 import { Repository } from '../../repository/protocol/repository'
 import { datatype } from 'faker'
-import { Job } from '../../db/entities/userEnum/job'
-import { Role } from '../../db/entities/userEnum/role'
+import { Job } from '../../infrastructure/db/entities/userEnum/job'
+import { Role } from '../../infrastructure/db/entities/userEnum/role'
 
 describe('Should test use case create user', () => {
   let sut: CreateUserUseCase

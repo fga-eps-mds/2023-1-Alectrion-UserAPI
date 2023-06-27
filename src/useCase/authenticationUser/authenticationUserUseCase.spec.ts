@@ -3,8 +3,8 @@ import { Encryptor } from '../../infrastructure/service/encrypte.service'
 import { Token } from '../../infrastructure/service/token.service'
 import { mock } from 'jest-mock-extended'
 import { datatype } from 'faker'
-import { Job } from '../../db/entities/userEnum/job'
-import { Role } from '../../db/entities/userEnum/role'
+import { Job } from '../../infrastructure/db/entities/userEnum/job'
+import { Role } from '../../infrastructure/db/entities/userEnum/role'
 import { User } from '../../domain/entities/user'
 import {
   AuthenticateUserUseCase,
