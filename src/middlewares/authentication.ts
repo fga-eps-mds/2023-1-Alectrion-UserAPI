@@ -13,6 +13,7 @@ export function IsUserAuthenticated(
   res: Response,
   next: NextFunction
 ) {
+  console.log(req)
   const authToken = req.headers.authorization
   if (!authToken) {
     return res

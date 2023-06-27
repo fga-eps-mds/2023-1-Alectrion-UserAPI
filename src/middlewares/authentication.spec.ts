@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express'
 import { verify } from 'jsonwebtoken'
 import { IsUserAuthenticated } from './authentication'
 
-// Mock the required dependencies and environment variables
 jest.mock('jsonwebtoken', () => ({
   verify: jest.fn()
 }))
@@ -43,5 +42,15 @@ describe('IsUserAuthenticated', () => {
     expect(res.status).toHaveBeenCalledWith(401)
     expect(res.end).toHaveBeenCalled()
     expect(next).not.toHaveBeenCalled()
+  })
+
+  it('shouldnt call next() if the authentication token is not present', () => {
+    req = { headers: { authorization: 'Bearer ' } }
+    const payload = { userId: 'user-id', role: 'admin' }
+    verifyMock.mockReturnValueOnce(payload)
+    IsUserAuthenticated(req as Request, res as Response, next)
+    console.log(req)
+    expect(next).toHaveBeenCalled()
+    expect(verify).toHaveBeenCalledWith('seu_token_aqui', expect.anything())
   })
 })

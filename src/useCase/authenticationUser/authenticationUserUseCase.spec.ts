@@ -27,7 +27,7 @@ const mockedUser: User = {
   password: datatype.string(),
   createdAt: new Date(),
   updatedAt: new Date(),
-  temporaryPassword: false
+  temporarypassword: false
 }
 
 const authenticateUserUseCase = new AuthenticateUserUseCase(
@@ -58,7 +58,8 @@ describe('Authentication use case', () => {
         role: mockedUser.role,
         job: mockedUser.job,
         cpf: mockedUser.cpf,
-        id: mockedUser.id
+        id: mockedUser.id,
+        temporaryPassword: mockedUser.temporarypassword
       }
     }
 
@@ -123,7 +124,7 @@ describe('Authentication use case', () => {
         job: mockedUser.job,
         cpf: mockedUser.cpf,
         id: mockedUser.id,
-        temporaryPassword: mockedUser.temporaryPassword
+        temporaryPassword: mockedUser.temporarypassword
       }
     }
 
@@ -152,7 +153,7 @@ describe('Authentication use case', () => {
         job: mockedUser.job,
         cpf: mockedUser.cpf,
         id: mockedUser.id,
-        temporaryResponse: mockedUser.temporaryPassword
+        temporaryPassword: mockedUser.temporarypassword
       }
     }
 

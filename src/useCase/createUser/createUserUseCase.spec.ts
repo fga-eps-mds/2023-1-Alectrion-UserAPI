@@ -6,6 +6,7 @@ import {
 } from './createUserUseCase'
 import { MockProxy, mock } from 'jest-mock-extended'
 import { Encryptor } from '../../services/encryptor'
+import { MailerAdapter } from '../../adapters/mailerAdapter'
 import { Repository } from '../../repository/protocol/repository'
 import { datatype } from 'faker'
 import { Job } from '../../db/entities/userEnum/job'
@@ -14,6 +15,7 @@ import { Role } from '../../db/entities/userEnum/role'
 describe('Should test use case create user', () => {
   let sut: CreateUserUseCase
   let encryptor: MockProxy<Encryptor>
+  let mailer: MockProxy<MailerAdapter>
   let userRepository: MockProxy<Repository>
   const body: CreateUserData = {
     name: datatype.string(),
@@ -27,7 +29,7 @@ describe('Should test use case create user', () => {
   beforeEach(() => {
     userRepository = mock()
     encryptor = mock()
-    sut = new CreateUserUseCase(encryptor, userRepository)
+    sut = new CreateUserUseCase(encryptor, userRepository, mailer)
     userRepository.findOneByEmail.mockResolvedValue(undefined)
     userRepository.findOneByUsername.mockResolvedValue(undefined)
     userRepository.createUser.mockResolvedValue({
@@ -41,7 +43,7 @@ describe('Should test use case create user', () => {
       job: Job.GENERICO,
       role: Role.ADMIN,
       cpf: datatype.string(),
-      temporaryPassword: false
+      temporarypassword: false
     })
   })
 
@@ -64,13 +66,13 @@ describe('Should test use case create user', () => {
       updatedAt: new Date(),
       job: Job.GENERICO,
       role: Role.ADMIN,
-      temporaryPassword: false
+      temporarypassword: false
     })
 
     const result = await sut.execute(body)
     expect(result.data).toBeUndefined()
     expect(result.error).toEqual(
-      new UserAlreadyExistsError('email já utilizado')
+      new UserAlreadyExistsError('Email já utilizado')
     )
     expect(userRepository.findOneByUsername).toBeCalledTimes(0)
   })
@@ -87,13 +89,13 @@ describe('Should test use case create user', () => {
       updatedAt: new Date(),
       job: Job.GENERICO,
       role: Role.ADMIN,
-      temporaryPassword: false
+      temporarypassword: false
     })
 
     const result = await sut.execute(body)
 
     expect(result.error).toEqual(
-      new UserAlreadyExistsError('username já utilizado')
+      new UserAlreadyExistsError('Username já utilizado')
     )
     expect(userRepository.findOneByUsername).toBeCalledTimes(1)
   })

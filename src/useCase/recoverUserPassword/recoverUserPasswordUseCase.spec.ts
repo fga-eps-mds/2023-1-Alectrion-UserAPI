@@ -33,7 +33,7 @@ const foundUser = {
   createdAt: new Date(),
   updatedAt: new Date(),
   deletedAt: undefined,
-  temporaryPassword: false,
+  temporarypassword: false,
   isDeleted: false
 }
 
