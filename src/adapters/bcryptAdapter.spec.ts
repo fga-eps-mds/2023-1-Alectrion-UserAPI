@@ -1,7 +1,7 @@
 import { BcryptAdapter } from './bcryptAdapter'
-import { compareSync, hashSync } from 'bcrypt'
+import { compareSync, hashSync } from 'bcryptjs'
 
-jest.mock('bcrypt')
+jest.mock('bcryptjs')
 
 const mockedDependency = jest.mocked(hashSync)
 const mockedDependencyCompare = jest.mocked(compareSync)
