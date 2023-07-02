@@ -2,6 +2,7 @@ import {
   CreateUserData,
   CreateUserError,
   CreateUserUseCase,
+  EmailNotSentError,
   UserAlreadyExistsError
 } from './createUserUseCase'
 import { MockProxy, mock } from 'jest-mock-extended'
@@ -12,11 +13,13 @@ import { datatype } from 'faker'
 import { Job } from '../../db/entities/userEnum/job'
 import { Role } from '../../db/entities/userEnum/role'
 
+const mailer = mock<MailerAdapter>()
+
 describe('Should test use case create user', () => {
   let sut: CreateUserUseCase
   let encryptor: MockProxy<Encryptor>
-  let mailer: MockProxy<MailerAdapter>
   let userRepository: MockProxy<Repository>
+
   const body: CreateUserData = {
     name: datatype.string(),
     email: `${datatype.string()}@t.com`,
@@ -107,6 +110,30 @@ describe('Should test use case create user', () => {
     expect(encryptor.encrypt).toBeCalledWith(body.password)
   })
 
+  it('should return UserAlreadyExistsError if cpf already exists', async () => {
+    userRepository.findOneByCpf.mockResolvedValueOnce({
+      name: datatype.string(),
+      email: `${datatype.string()}@t.com`,
+      cpf: datatype.string(),
+      username: datatype.string(),
+      password: 'any_password',
+      id: 'any_email',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      job: Job.GENERICO,
+      role: Role.ADMIN,
+      temporarypassword: false
+    })
+    const result = await sut.execute(body)
+
+    const expectedResponse = {
+      isSuccess: false,
+      error: new UserAlreadyExistsError('Cpf já utilizado')
+    }
+    expect(result).toEqual(expectedResponse)
+    expect(encryptor.encrypt).toBeCalledTimes(0)
+  })
+
   it('should return CreateUserError if userRepository CreateUser returns undefined', async () => {
     userRepository.createUser.mockResolvedValue(undefined)
     const result = await sut.execute(body)
@@ -114,5 +141,26 @@ describe('Should test use case create user', () => {
     expect(result.error).toEqual(new CreateUserError())
     expect(result.isSuccess).toBeFalsy()
     expect(result.data).toBeUndefined()
+  })
+
+  test('Should return EmailNotSentError in not query user', async () => {
+    mailer.sendRecoverPasswordEmail.mockResolvedValueOnce(false)
+    const body: CreateUserData = {
+      name: datatype.string(),
+      email: `${datatype.string()}@t.com`,
+      username: datatype.string(),
+      cpf: datatype.string(),
+      jobFunction: 'GENERICO',
+      role: 'BASICO'
+    }
+    const result = await sut.execute(body)
+
+    const expectedResponse = {
+      isSuccess: false,
+      error: new EmailNotSentError()
+    }
+    expect(result).toEqual(expectedResponse)
+    expect(userRepository.updateOne).toBeCalledTimes(0)
+    expect(mailer.sendRecoverPasswordEmail).toBeCalledTimes(1)
   })
 })
