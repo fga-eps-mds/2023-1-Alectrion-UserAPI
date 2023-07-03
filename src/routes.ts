@@ -21,9 +21,5 @@ routes.post('/create', isUserAdmin, adapt(makeCreateUserController()))
 routes.get('/get', isUserAdmin, adapt(makeGetUserController()))
 routes.post('/login', adapt(makeAuthenticateUserController()))
 routes.delete('/delete', isUserAdmin, adapt(makeDeleteUserController()))
-routes.get(
-  '/recover',
-  isNotQueryUser,
-  adapt(makeRecoverUserPasswordController())
-)
+routes.get('/recover', adapt(makeRecoverUserPasswordController()))
 export default routes
