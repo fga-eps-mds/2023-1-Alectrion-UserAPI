@@ -41,7 +41,7 @@ export class CreateUserError extends Error {
 
 export class EmailNotSentError extends Error {
   constructor() {
-    super('Não foi possível enviar o e-mail de recuperação de senha.')
+    super('Não foi possível enviar o e-mail.')
     this.name = 'EmailNotSentError'
   }
 }

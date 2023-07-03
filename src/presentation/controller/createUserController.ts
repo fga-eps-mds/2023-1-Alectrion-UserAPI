@@ -1,9 +1,11 @@
 import { UserAlreadyExistsError } from './../../useCase/createUser/createUserUseCase'
 import { Controller } from '../protocols/controller'
-import { CreateUserUseCase } from '../../useCase/createUser/createUserUseCase'
+import {
+  CreateUserUseCase,
+  EmailNotSentError
+} from '../../useCase/createUser/createUserUseCase'
 import { badRequest, HttpResponse, ok, serverError } from '../helpers'
 import { BadRequestError } from '../errors'
-import { EmailNotSentError } from '../../useCase/recoverUserPassword/recoverUserPasswordUseCase'
 
 type HttpRequest = {
   name: string
