@@ -1,4 +1,4 @@
-import { compareSync, hashSync } from 'bcrypt'
+import { compareSync, hashSync } from 'bcryptjs'
 import { Encryptor } from '../services/encryptor'
 
 export class BcryptAdapter implements Encryptor {

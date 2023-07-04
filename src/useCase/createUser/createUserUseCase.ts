@@ -11,15 +11,15 @@ export interface CreateUserData {
   username: string
   cpf: string
   jobFunction:
-  | 'DELEGADO'
-  | 'AGENTE_POLICIA'
-  | 'ESCRIVAO'
-  | 'COORDENADOR'
-  | 'CHEFE_SECAO'
-  | 'GENERICO'
-  | 'COMISSIONADO'
-  | 'ESTAGIARIO'
-  | 'SUPERINTENDENTE'
+    | 'DELEGADO'
+    | 'AGENTE_POLICIA'
+    | 'ESCRIVAO'
+    | 'COORDENADOR'
+    | 'CHEFE_SECAO'
+    | 'GENERICO'
+    | 'COMISSIONADO'
+    | 'ESTAGIARIO'
+    | 'SUPERINTENDENTE'
   role: 'ADMIN' | 'GERENTE' | 'BASICO' | 'CONSULTA'
   password: string
 }
@@ -49,7 +49,6 @@ export class CreateUserUseCase
   async execute(
     createUserData: CreateUserData
   ): Promise<UseCaseReponse<{ email: string; job: string }>> {
-    console.log("Cheguei")
     if (createUserData.email) {
       const userByEmail = await this.userRepository.findOneByEmail(
         createUserData.email
