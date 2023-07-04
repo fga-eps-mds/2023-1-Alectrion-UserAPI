@@ -3,6 +3,7 @@ import {
   CreateUserError,
   CreateUserUseCase,
   EmailNotSentError,
+  PasswordNotProvidedError,
   UserAlreadyExistsError
 } from './createUserUseCase'
 import { MockProxy, mock } from 'jest-mock-extended'
@@ -140,6 +141,24 @@ describe('Should test use case create user', () => {
 
     expect(result.error).toEqual(new CreateUserError())
     expect(result.isSuccess).toBeFalsy()
+    expect(result.data).toBeUndefined()
+  })
+
+  it('should return PasswordNotProvidedError if user is CONSULTA and password is not provided', async () => {
+    const body: CreateUserData = {
+      name: datatype.string(),
+      email: `${datatype.string()}@t.com`,
+      username: datatype.string(),
+      cpf: datatype.string(),
+      jobFunction: 'GENERICO',
+      role: 'CONSULTA'
+    }
+    const result = await sut.execute(body)
+    const expectedResponse = {
+      isSuccess: false,
+      error: new PasswordNotProvidedError()
+    }
+    expect(result).toEqual(expectedResponse)
     expect(result.data).toBeUndefined()
   })
 

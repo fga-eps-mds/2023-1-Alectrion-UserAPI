@@ -46,6 +46,13 @@ export class EmailNotSentError extends Error {
   }
 }
 
+export class PasswordNotProvidedError extends Error {
+  constructor() {
+    super('Usuário de consulta precisa de senha.')
+    this.name = 'PasswordNotProvidedError'
+  }
+}
+
 export class CreateUserUseCase
   implements UseCase<{ email: string; job: string }>
 {
@@ -92,6 +99,11 @@ export class CreateUserUseCase
     if (createUserData.password) {
       userPassword = createUserData.password
     } else {
+      if (createUserData.role === 'CONSULTA')
+        return {
+          isSuccess: false,
+          error: new PasswordNotProvidedError()
+        }
       userPassword = crypto.randomBytes(4).toString('hex')
       const sent = await this.mailer.sendRecoverPasswordEmail(
         createUserData.email,

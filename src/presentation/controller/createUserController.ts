@@ -1,4 +1,7 @@
-import { UserAlreadyExistsError } from './../../useCase/createUser/createUserUseCase'
+import {
+  PasswordNotProvidedError,
+  UserAlreadyExistsError
+} from './../../useCase/createUser/createUserUseCase'
 import { Controller } from '../protocols/controller'
 import {
   CreateUserUseCase,
@@ -46,6 +49,9 @@ export class CreateUserController extends Controller {
       return badRequest(new BadRequestError(response.error.message))
 
     if (response.error instanceof EmailNotSentError)
+      return badRequest(new BadRequestError(response.error.message))
+
+    if (response.error instanceof PasswordNotProvidedError)
       return badRequest(new BadRequestError(response.error.message))
 
     return serverError(response.error)

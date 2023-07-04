@@ -3,7 +3,8 @@ import {
   CreateUserUseCase,
   CreateUserData,
   UserAlreadyExistsError,
-  EmailNotSentError
+  EmailNotSentError,
+  PasswordNotProvidedError
 } from '../../useCase/createUser/createUserUseCase'
 import { CreateUserController } from './createUserController'
 import { datatype } from 'faker'
@@ -63,6 +64,24 @@ describe('CreateUserController', () => {
     const useCaseReponseMock = {
       isSuccess: false,
       error: new EmailNotSentError()
+    }
+    createUserUseCaseMocked.execute.mockResolvedValue(useCaseReponseMock)
+
+    const controllerReponseExpected = {
+      statusCode: 400,
+      data: useCaseReponseMock.error
+    }
+
+    const response = await createUserController.perform(request)
+    expect(response).toEqual(controllerReponseExpected)
+    expect(createUserUseCaseMocked.execute).toBeCalledTimes(1)
+    expect(createUserUseCaseMocked.execute).toHaveBeenCalledWith(request)
+  })
+
+  it('should return password not provided if user is of type CONSULTA', async () => {
+    const useCaseReponseMock = {
+      isSuccess: false,
+      error: new PasswordNotProvidedError()
     }
     createUserUseCaseMocked.execute.mockResolvedValue(useCaseReponseMock)
 
