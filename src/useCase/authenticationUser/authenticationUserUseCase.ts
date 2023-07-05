@@ -29,7 +29,7 @@ export interface DataUserResponse {
   temporaryPassword: boolean
 }
 export interface DataUserLogin {
-  username: string
+  identifier: string
   password: string
 }
 
@@ -44,7 +44,9 @@ export class AuthenticateUserUseCase implements UseCase<DataUserResponse> {
     userData: DataUserLogin
   ): Promise<UseCaseReponse<DataUserResponse>> {
     let userFound = null
-    userFound = await this.userRepository.findToAuthenticate(userData.username)
+    userFound = await this.userRepository.findToAuthenticate(
+      userData.identifier
+    )
 
     if (!userFound) {
       return { isSuccess: false, error: new LoginUsernameError() }

@@ -42,7 +42,7 @@ describe('Authentication use case', () => {
     mockedEncryptor.compare.mockReturnValue(true)
     mockedToken.generateToken.mockReturnValue(mockedGenerateToken)
     const authenticationInput = {
-      username: datatype.string(),
+      identifier: datatype.string(),
       password: datatype.string()
     }
     const response = await authenticateUserUseCase.execute(authenticationInput)
@@ -72,7 +72,7 @@ describe('Authentication use case', () => {
     mockedEncryptor.compare.mockReturnValue(true)
     mockedToken.generateToken.mockReturnValue(mockedGenerateToken)
     const authenticationInput = {
-      username: datatype.string(),
+      identifier: datatype.string(),
       password: datatype.string()
     }
     const response = await authenticateUserUseCase.execute(authenticationInput)
@@ -90,7 +90,7 @@ describe('Authentication use case', () => {
     mockedEncryptor.compare.mockReturnValue(false)
     mockedToken.generateToken.mockReturnValue(mockedGenerateToken)
     const authenticationInput = {
-      username: datatype.string(),
+      identifier: datatype.string(),
       password: datatype.string()
     }
     const response = await authenticateUserUseCase.execute(authenticationInput)
@@ -108,7 +108,7 @@ describe('Authentication use case', () => {
     mockedEncryptor.compare.mockReturnValue(true)
     mockedToken.generateToken.mockReturnValue(mockedGenerateToken)
     const authenticationInput = {
-      username: mockedUser.email,
+      identifier: mockedUser.email,
       password: mockedUser.password
     }
     const response = await authenticateUserUseCase.execute(authenticationInput)
@@ -137,7 +137,7 @@ describe('Authentication use case', () => {
     mockedEncryptor.compare.mockReturnValue(true)
     mockedToken.generateToken.mockReturnValue(mockedGenerateToken)
     const authenticationInput = {
-      username: mockedUser.cpf,
+      identifier: mockedUser.cpf,
       password: mockedUser.password
     }
     const response = await authenticateUserUseCase.execute(authenticationInput)

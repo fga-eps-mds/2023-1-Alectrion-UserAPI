@@ -9,7 +9,7 @@ import { ServerError } from '../errors'
 
 describe('AuthenticateUserController', () => {
   const request: DataUserLogin = {
-    username: datatype.string(),
+    identifier: datatype.string(),
     password: datatype.string()
   }
 
