@@ -8,7 +8,7 @@ import { badRequest, HttpResponse, ok, serverError } from '../helpers'
 import { BadRequestError } from '../errors'
 
 type HttpRequest = {
-  identifier: string
+  username: string
   password: string
 }
 
