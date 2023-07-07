@@ -11,12 +11,14 @@ export interface Repository {
     job: Job
     role: Role
     password: string
+    temporaryPassword: boolean
   }): Promise<User | undefined>
   updateOne(userData: any): Promise<boolean>
   deleteOne(userId: string): Promise<void>
   findOne(userId: string): Promise<User | null>
   findOneByEmail(email: string): Promise<User | undefined>
   findOneByUsername(username: string): Promise<User | undefined>
+  findOneByCpf(cpf: string): Promise<User | undefined>
   findAll(): Promise<User | undefined>
   findToAuthenticate(userInput: string): Promise<User | undefined | null>
 }

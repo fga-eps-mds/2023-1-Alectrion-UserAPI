@@ -66,7 +66,7 @@ export class RecoverUserPasswordUseCase
       const isUpdated = await this.userRepository.updateOne({
         userId: response.id,
         password: hashedPassword,
-        temporaryPassword: true
+        temporarypassword: true
       })
 
       if (!isUpdated) {

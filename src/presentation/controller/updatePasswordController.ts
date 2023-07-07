@@ -22,12 +22,11 @@ export class UpdatePasswordControler extends Controller {
     const user = httpRequest
     const response = await this.updatePasswordUseCase.execute(user)
 
-    if (response.isSuccess && response.data) {
-      return ok(response.data)
-    } else {
-      if (response.error instanceof UpdatePasswordError) {
-        return badRequest(new BadRequestError(response.error.message))
-      } else return serverError(response.error)
-    }
+    if (response.isSuccess && response.data) return ok(response.data)
+
+    if (response.error instanceof UpdatePasswordError)
+      return badRequest(new BadRequestError(response.error.message))
+
+    return serverError(response.error)
   }
 }

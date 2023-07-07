@@ -1,6 +1,12 @@
-import { UserAlreadyExistsError } from './../../useCase/createUser/createUserUseCase'
+import {
+  PasswordNotProvidedError,
+  UserAlreadyExistsError
+} from './../../useCase/createUser/createUserUseCase'
 import { Controller } from '../protocols/controller'
-import { CreateUserUseCase } from '../../useCase/createUser/createUserUseCase'
+import {
+  CreateUserUseCase,
+  EmailNotSentError
+} from '../../useCase/createUser/createUserUseCase'
 import { badRequest, HttpResponse, ok, serverError } from '../helpers'
 import { BadRequestError } from '../errors'
 
@@ -20,7 +26,7 @@ type HttpRequest = {
     | 'ESTAGIARIO'
     | 'SUPERINTENDENTE'
   role: 'ADMIN' | 'GERENTE' | 'BASICO' | 'CONSULTA'
-  password: string
+  password?: string
 }
 
 type Model =
@@ -37,12 +43,17 @@ export class CreateUserController extends Controller {
 
   async perform(params: HttpRequest): Promise<HttpResponse<Model>> {
     const response = await this.createUser.execute(params)
-    if (response.isSuccess && response.data) {
-      return ok(response.data)
-    } else {
-      if (response.error instanceof UserAlreadyExistsError) {
-        return badRequest(new BadRequestError(response.error.message))
-      } else return serverError(response.error)
-    }
+    if (response.isSuccess && response.data) return ok(response.data)
+
+    if (response.error instanceof UserAlreadyExistsError)
+      return badRequest(new BadRequestError(response.error.message))
+
+    if (response.error instanceof EmailNotSentError)
+      return badRequest(new BadRequestError(response.error.message))
+
+    if (response.error instanceof PasswordNotProvidedError)
+      return badRequest(new BadRequestError(response.error.message))
+
+    return serverError(response.error)
   }
 }

@@ -57,7 +57,7 @@ export class User {
     type: 'boolean',
     default: true
   })
-  temporaryPassword: boolean
+  temporarypassword: boolean
 
   @Column({
     type: 'boolean',

@@ -3,7 +3,8 @@ import { Repository } from '../../repository/protocol/repository'
 import { Encryptor } from '../../services/encryptor'
 import { Job } from '../../db/entities/userEnum/job'
 import { Role } from '../../db/entities/userEnum/role'
-import { create } from 'domain'
+import { MailerAdapter } from '../../adapters/mailerAdapter'
+import crypto from 'crypto'
 
 export interface CreateUserData {
   name: string
@@ -21,7 +22,7 @@ export interface CreateUserData {
     | 'ESTAGIARIO'
     | 'SUPERINTENDENTE'
   role: 'ADMIN' | 'GERENTE' | 'BASICO' | 'CONSULTA'
-  password: string
+  password?: string
 }
 
 export class UserAlreadyExistsError extends Error {
@@ -38,12 +39,27 @@ export class CreateUserError extends Error {
   }
 }
 
+export class EmailNotSentError extends Error {
+  constructor() {
+    super('Não foi possível enviar o e-mail.')
+    this.name = 'EmailNotSentError'
+  }
+}
+
+export class PasswordNotProvidedError extends Error {
+  constructor() {
+    super('Usuário de consulta precisa de senha.')
+    this.name = 'PasswordNotProvidedError'
+  }
+}
+
 export class CreateUserUseCase
   implements UseCase<{ email: string; job: string }>
 {
   constructor(
     private readonly encryptor: Encryptor,
-    private readonly userRepository: Repository
+    private readonly userRepository: Repository,
+    private readonly mailer: MailerAdapter
   ) {}
 
   async execute(
@@ -56,7 +72,7 @@ export class CreateUserUseCase
       if (userByEmail !== undefined) {
         return {
           isSuccess: false,
-          error: new UserAlreadyExistsError('email já utilizado')
+          error: new UserAlreadyExistsError('Email já utilizado')
         }
       }
     }
@@ -67,10 +83,40 @@ export class CreateUserUseCase
     if (userByUsername !== undefined) {
       return {
         isSuccess: false,
-        error: new UserAlreadyExistsError('username já utilizado')
+        error: new UserAlreadyExistsError('Username já utilizado')
       }
     }
-    const hashedPassword = this.encryptor.encrypt(createUserData.password)
+
+    const userByCpf = await this.userRepository.findOneByCpf(createUserData.cpf)
+    if (userByCpf !== undefined) {
+      return {
+        isSuccess: false,
+        error: new UserAlreadyExistsError('Cpf já utilizado')
+      }
+    }
+
+    let userPassword
+    if (createUserData.password) {
+      userPassword = createUserData.password
+    } else {
+      if (createUserData.role === 'CONSULTA')
+        return {
+          isSuccess: false,
+          error: new PasswordNotProvidedError()
+        }
+      userPassword = crypto.randomBytes(4).toString('hex')
+      const sent = await this.mailer.sendRecoverPasswordEmail(
+        createUserData.email,
+        userPassword
+      )
+      if (!sent)
+        return {
+          isSuccess: false,
+          error: new EmailNotSentError()
+        }
+    }
+
+    const hashedPassword = this.encryptor.encrypt(userPassword)
 
     const user = await this.userRepository.createUser({
       name: createUserData.name,
@@ -79,7 +125,8 @@ export class CreateUserUseCase
       cpf: createUserData.cpf,
       username: createUserData.username,
       job: Job[createUserData.jobFunction],
-      role: Role[createUserData.role]
+      role: Role[createUserData.role],
+      temporaryPassword: createUserData.role !== 'CONSULTA'
     })
 
     if (user !== undefined) {

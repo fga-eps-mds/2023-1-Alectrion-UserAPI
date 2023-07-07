@@ -27,31 +27,29 @@ export class UpdatePasswordUseCase implements UseCase<{ message: string }> {
     passwordUpdate: UpdatePasswordData
   ): Promise<UseCaseReponse<{ message: string }>> {
     try {
-      let user = null
-
       if (
-        typeof passwordUpdate.username !== 'undefined' &&
+        typeof passwordUpdate.email !== 'undefined' &&
         typeof passwordUpdate.actualPassword !== 'undefined' &&
         typeof passwordUpdate.password !== 'undefined'
       ) {
-        user = await this.userRepository.findToAuthenticate(
-          passwordUpdate?.username
+        const user = await this.userRepository.findToAuthenticate(
+          passwordUpdate?.email
         )
 
         const checkPassword = this.encryptor.compare(
           passwordUpdate.actualPassword || '',
           user?.password || ''
         )
-
         if (checkPassword) {
           const hashedPassword = this.encryptor.encrypt(passwordUpdate.password)
 
           const { actualPassword, ...rest } = passwordUpdate
+
           await this.userRepository.updateOne({
             ...rest,
-            password: hashedPassword
+            password: hashedPassword,
+            temporarypassword: false
           })
-
           return { isSuccess: true, data: { message: 'Senha atualizada!' } }
         } else {
           return {

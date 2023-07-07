@@ -8,7 +8,7 @@ import { badRequest, HttpResponse, ok, serverError } from '../helpers'
 import { BadRequestError } from '../errors'
 
 type HttpRequest = {
-  username: string
+  identifier: string
   password: string
 }
 
@@ -32,7 +32,6 @@ export class AuthenticationUserController extends Controller {
 
   async perform(params: HttpRequest): Promise<HttpResponse<Model>> {
     const response = await this.authenticateUserUseCase.execute(params)
-    console.log(response.data);
     if (response.isSuccess && response.data) {
       return ok(response.data)
     } else {
