@@ -19,7 +19,7 @@ export class LoginPasswordError extends Error {
 
 export class UserDeletedError extends Error {
   constructor() {
-    super('Usuário desabilidatado')
+    super('Usuário desabilitado')
     this.name = 'UserDeletedError'
   }
 }

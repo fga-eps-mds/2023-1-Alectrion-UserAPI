@@ -1,7 +1,10 @@
 import { mock } from 'jest-mock-extended'
 import {
   AuthenticateUserUseCase,
-  DataUserLogin
+  DataUserLogin,
+  LoginPasswordError,
+  LoginUsernameError,
+  UserDeletedError
 } from '../../useCase/authenticationUser/authenticationUserUseCase'
 import { datatype } from 'faker'
 import { AuthenticationUserController } from './authenticateUserController'
@@ -54,6 +57,51 @@ describe('AuthenticateUserController', () => {
     authenticateUserUseCaseMocked.execute.mockResolvedValue(useCaseReponseMock)
     const controllerResponseExpected = {
       statusCode: 500,
+      data: useCaseReponseMock.error
+    }
+
+    const response = await authenticationUserController.perform(request)
+    expect(response).toEqual(controllerResponseExpected)
+  })
+
+  it('should return LoginUsernameError', async () => {
+    const useCaseReponseMock = {
+      isSuccess: false,
+      error: new LoginUsernameError()
+    }
+    authenticateUserUseCaseMocked.execute.mockResolvedValue(useCaseReponseMock)
+    const controllerResponseExpected = {
+      statusCode: 400,
+      data: useCaseReponseMock.error
+    }
+
+    const response = await authenticationUserController.perform(request)
+    expect(response).toEqual(controllerResponseExpected)
+  })
+
+  it('should return LoginPasswordError', async () => {
+    const useCaseReponseMock = {
+      isSuccess: false,
+      error: new LoginPasswordError()
+    }
+    authenticateUserUseCaseMocked.execute.mockResolvedValue(useCaseReponseMock)
+    const controllerResponseExpected = {
+      statusCode: 400,
+      data: useCaseReponseMock.error
+    }
+
+    const response = await authenticationUserController.perform(request)
+    expect(response).toEqual(controllerResponseExpected)
+  })
+
+  it('should return UserDeletedError', async () => {
+    const useCaseReponseMock = {
+      isSuccess: false,
+      error: new UserDeletedError()
+    }
+    authenticateUserUseCaseMocked.execute.mockResolvedValue(useCaseReponseMock)
+    const controllerResponseExpected = {
+      statusCode: 400,
       data: useCaseReponseMock.error
     }
 
