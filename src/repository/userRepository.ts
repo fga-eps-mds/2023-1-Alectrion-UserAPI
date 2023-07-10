@@ -25,7 +25,8 @@ class UserRepository implements Repository {
         'role',
         'job',
         'cpf',
-        'temporarypassword'
+        'temporarypassword',
+        'isDeleted'
       ] // Retornando somente o que está entre as chaves.
     })
     return userPassword[0]
@@ -39,6 +40,7 @@ class UserRepository implements Repository {
   }
 
   async deleteOne(userId: string): Promise<void> {
+    console.log('Deletou: ', userId)
     await this.userRepository.update(userId, {
       isDeleted: true,
       deletedAt: new Date()
@@ -69,7 +71,7 @@ class UserRepository implements Repository {
 
   async findAll(): Promise<any> {
     const users = await this.userRepository.find({
-      where: { isDeleted: false }
+      // where: { isDeleted: false }
     })
     return users
   }

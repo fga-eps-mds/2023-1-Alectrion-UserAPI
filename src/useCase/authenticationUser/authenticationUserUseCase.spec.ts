@@ -9,26 +9,13 @@ import { User } from '../../domain/entities/user'
 import {
   AuthenticateUserUseCase,
   LoginPasswordError,
-  LoginUsernameError
+  LoginUsernameError,
+  UserDeletedError
 } from './authenticationUserUseCase'
 
 const mockedRepository = mock<Repository>()
 const mockedEncryptor = mock<Encryptor>()
 const mockedToken = mock<Token>()
-
-const mockedUser: User = {
-  id: datatype.string(),
-  name: datatype.string(),
-  email: datatype.string(),
-  username: datatype.string(),
-  cpf: datatype.string(),
-  job: Job.DELEGADO,
-  role: Role.ADMIN,
-  password: datatype.string(),
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  temporarypassword: false
-}
 
 const authenticateUserUseCase = new AuthenticateUserUseCase(
   mockedRepository,
@@ -36,6 +23,22 @@ const authenticateUserUseCase = new AuthenticateUserUseCase(
   mockedToken
 )
 describe('Authentication use case', () => {
+  let mockedUser: User
+  beforeEach(() => {
+    mockedUser = {
+      id: datatype.string(),
+      name: datatype.string(),
+      email: datatype.string(),
+      username: datatype.string(),
+      cpf: datatype.string(),
+      job: Job.DELEGADO,
+      role: Role.ADMIN,
+      password: datatype.string(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      temporarypassword: false
+    }
+  })
   it('should authenticate with success ', async () => {
     const mockedGenerateToken = datatype.string()
     mockedRepository.findToAuthenticate.mockResolvedValue(mockedUser)
@@ -100,6 +103,22 @@ describe('Authentication use case', () => {
     }
     expect(response.isSuccess).toEqual(useCaseExpectedResponse.isSuccess)
     expect(response.error).toEqual(new LoginPasswordError())
+  })
+
+  it('should return an error - user deleted', async () => {
+    mockedUser.isDeleted = true
+    mockedRepository.findToAuthenticate.mockResolvedValue(mockedUser)
+    const authenticationInput = {
+      identifier: datatype.string(),
+      password: datatype.string()
+    }
+    const response = await authenticateUserUseCase.execute(authenticationInput)
+    const useCaseExpectedResponse = {
+      isSuccess: false,
+      error: 'Usuário desabilitado'
+    }
+    expect(response.isSuccess).toEqual(useCaseExpectedResponse.isSuccess)
+    expect(response.error).toEqual(new UserDeletedError())
   })
 
   it('should authenticate with email and return success ', async () => {

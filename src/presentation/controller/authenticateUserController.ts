@@ -2,7 +2,8 @@ import { Controller } from '../protocols/controller'
 import {
   AuthenticateUserUseCase,
   LoginUsernameError,
-  LoginPasswordError
+  LoginPasswordError,
+  UserDeletedError
 } from '../../useCase/authenticationUser/authenticationUserUseCase'
 import { badRequest, HttpResponse, ok, serverError } from '../helpers'
 import { BadRequestError } from '../errors'
@@ -37,7 +38,11 @@ export class AuthenticationUserController extends Controller {
     } else {
       if (response.error instanceof LoginUsernameError) {
         return badRequest(new BadRequestError(response.error.message))
-      } else if (response.error instanceof LoginPasswordError) {
+      }
+      if (response.error instanceof LoginPasswordError) {
+        return badRequest(new BadRequestError(response.error.message))
+      }
+      if (response.error instanceof UserDeletedError) {
         return badRequest(new BadRequestError(response.error.message))
       }
       return serverError(response.error)

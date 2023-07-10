@@ -17,6 +17,13 @@ export class LoginPasswordError extends Error {
   }
 }
 
+export class UserDeletedError extends Error {
+  constructor() {
+    super('Usuário desabilitado')
+    this.name = 'UserDeletedError'
+  }
+}
+
 export interface DataUserResponse {
   token: string
   expireIn: string
@@ -47,11 +54,13 @@ export class AuthenticateUserUseCase implements UseCase<DataUserResponse> {
     userFound = await this.userRepository.findToAuthenticate(
       userData.identifier
     )
+    if (userFound?.isDeleted) {
+      return { isSuccess: false, error: new UserDeletedError() }
+    }
 
     if (!userFound) {
       return { isSuccess: false, error: new LoginUsernameError() }
     }
-
     const checkPassword = this.encryptor.compare(
       userData.password,
       userFound.password
