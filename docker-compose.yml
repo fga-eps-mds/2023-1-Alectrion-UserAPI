@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    image: 'postgres'
+    image: 'postgres:alpine'
     env_file:
       - db.env
     volumes:
@@ -23,7 +23,7 @@ services:
       - alectrion-network
     ports:
       - 4001:4001
-    command: bash -c "yarn && yarn migration:run && yarn dev"
+    command: sh -c "yarn && yarn migration:run && yarn dev"
 
 networks:
   alectrion-user-network:
