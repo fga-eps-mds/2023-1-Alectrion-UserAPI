@@ -32,10 +32,10 @@ export class GetUserController extends Controller {
     const response = await this.getUserUseCase.execute(params)
     if (response.isSuccess && response.data) {
       return ok(response.data)
-    } else {
-      if (response.error instanceof GetUserError) {
-        return badRequest(new BadRequestError(response.error.message))
-      } else return serverError(response.error)
     }
+    if (response.error instanceof GetUserError) {
+      return badRequest(new BadRequestError(response.error.message))
+    }
+    return serverError(response.error)
   }
 }

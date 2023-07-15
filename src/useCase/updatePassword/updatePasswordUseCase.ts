@@ -17,6 +17,20 @@ export class UpdatePasswordError extends Error {
   }
 }
 
+export class IncorrectPasswordError extends Error {
+  constructor() {
+    super('Senha incorreta.')
+    this.name = 'IncorrectPasswordError'
+  }
+}
+
+export class LackingInformationError extends Error {
+  constructor() {
+    super('Você precisa fornecer id, senha atual e nova senha.')
+    this.name = 'LackingInformationError'
+  }
+}
+
 export class UpdatePasswordUseCase implements UseCase<{ message: string }> {
   constructor(
     private readonly userRepository: Repository,
@@ -33,11 +47,11 @@ export class UpdatePasswordUseCase implements UseCase<{ message: string }> {
         typeof passwordUpdate.password !== 'undefined'
       ) {
         const user = await this.userRepository.findToAuthenticate(
-          passwordUpdate?.email
+          passwordUpdate.email
         )
 
         const checkPassword = this.encryptor.compare(
-          passwordUpdate.actualPassword || '',
+          passwordUpdate.actualPassword,
           user?.password || ''
         )
         if (checkPassword) {
@@ -45,25 +59,35 @@ export class UpdatePasswordUseCase implements UseCase<{ message: string }> {
 
           const { actualPassword, ...rest } = passwordUpdate
 
-          await this.userRepository.updateOne({
+          const result = await this.userRepository.updateOne({
             ...rest,
             password: hashedPassword,
             temporarypassword: false
           })
-          return { isSuccess: true, data: { message: 'Senha atualizada!' } }
+          if (result)
+            return { isSuccess: true, data: { message: 'Senha atualizada!' } }
+          else {
+            return {
+              isSuccess: false,
+              error: new UpdatePasswordError()
+            }
+          }
         } else {
           return {
             isSuccess: false,
-            data: { message: 'Senha atual não corresponde!' }
+            error: new IncorrectPasswordError()
           }
         }
       } else {
-        return { isSuccess: false, data: { message: 'Id não existente!' } }
+        return {
+          isSuccess: false,
+          error: new LackingInformationError()
+        }
       }
     } catch (error) {
       return {
         isSuccess: false,
-        data: { message: 'Não foi possível alterar a senha!' }
+        error: new UpdatePasswordError()
       }
     }
   }

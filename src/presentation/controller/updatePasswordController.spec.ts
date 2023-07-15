@@ -1,13 +1,24 @@
 import {
+  IncorrectPasswordError,
+  LackingInformationError,
   UpdatePasswordData,
   UpdatePasswordError
 } from '../../useCase/updatePassword/updatePasswordUseCase'
+import { ServerError } from '../errors'
 import { HttpResponse } from '../helpers'
 import { UpdatePasswordControler } from './updatePasswordController'
 
 describe('UpdatePasswordController', () => {
   const mockUpdatePasswordUseCase = {
     execute: jest.fn()
+  }
+
+  const request: UpdatePasswordData = {
+    actualPassword: '123456',
+    userId: '123',
+    email: 'example@example.com',
+    username: 'example',
+    password: 'newpassword'
   }
 
   const controller = new UpdatePasswordControler(
@@ -19,14 +30,6 @@ describe('UpdatePasswordController', () => {
   })
 
   it('should return an "ok" response with the message when the use case execution is successful', async () => {
-    const request: UpdatePasswordData = {
-      actualPassword: '123456',
-      userId: '123',
-      email: 'example@example.com',
-      username: 'example',
-      password: 'newpassword'
-    }
-
     const useCaseResponse = {
       isSuccess: true,
       data: {
@@ -47,15 +50,7 @@ describe('UpdatePasswordController', () => {
     expect(response).toEqual(expectedResponse)
   })
 
-  it('should return a "badRequest" response with the error when the use case execution returns an UpdatePasswordError', async () => {
-    const request: UpdatePasswordData = {
-      actualPassword: '123456',
-      userId: '123',
-      email: 'example@example.com',
-      username: 'example',
-      password: 'newpassword'
-    }
-
+  it('should return UpdatePasswordError', async () => {
     const useCaseResponse = {
       isSuccess: false,
       error: new UpdatePasswordError()
@@ -65,10 +60,7 @@ describe('UpdatePasswordController', () => {
 
     const expectedResponse: HttpResponse<any> = {
       statusCode: 400,
-      data: {
-        error:
-          useCaseResponse.error.message || 'Não foi possível atualizar a senha.'
-      }
+      data: useCaseResponse.error
     }
 
     const response = await controller.perform(request)
@@ -77,28 +69,55 @@ describe('UpdatePasswordController', () => {
     expect(response.statusCode).toEqual(expectedResponse.statusCode)
   })
 
-  it('should return a "serverError" response with the error when the use case execution returns an unhandled error', async () => {
-    const request: UpdatePasswordData = {
-      actualPassword: '123456',
-      userId: '123',
-      email: 'example@example.com',
-      username: 'example',
-      password: 'newpassword'
-    }
-
-    const error = new Error('Unexpected error')
+  it('should return Incorrect Password', async () => {
     const useCaseResponse = {
       isSuccess: false,
-      error
+      error: new IncorrectPasswordError()
+    }
+
+    mockUpdatePasswordUseCase.execute.mockResolvedValue(useCaseResponse)
+
+    const expectedResponse: HttpResponse<any> = {
+      statusCode: 400,
+      data: useCaseResponse.error
+    }
+
+    const response = await controller.perform(request)
+
+    expect(mockUpdatePasswordUseCase.execute).toHaveBeenCalledWith(request)
+    expect(response.statusCode).toEqual(expectedResponse.statusCode)
+  })
+
+  it('should return Lacking INformation Error', async () => {
+    const useCaseResponse = {
+      isSuccess: false,
+      error: new LackingInformationError()
+    }
+
+    mockUpdatePasswordUseCase.execute.mockResolvedValue(useCaseResponse)
+
+    const expectedResponse: HttpResponse<any> = {
+      statusCode: 400,
+      data: useCaseResponse.error
+    }
+
+    const response = await controller.perform(request)
+
+    expect(mockUpdatePasswordUseCase.execute).toHaveBeenCalledWith(request)
+    expect(response.statusCode).toEqual(expectedResponse.statusCode)
+  })
+
+  it('should return ServerError Password', async () => {
+    const useCaseResponse = {
+      isSuccess: false,
+      error: new ServerError()
     }
 
     mockUpdatePasswordUseCase.execute.mockResolvedValue(useCaseResponse)
 
     const expectedResponse: HttpResponse<any> = {
       statusCode: 500,
-      data: {
-        error: error.message || 'Não foi possível alterar a senha.'
-      }
+      data: useCaseResponse.error
     }
 
     const response = await controller.perform(request)
