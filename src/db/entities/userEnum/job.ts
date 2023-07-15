@@ -8,5 +8,5 @@ export enum Job {
   GENERICO = 'generico',
   COMISSIONADO = 'comissionado',
   ESTAGIARIO = 'estagiario',
-  SUPERINTENDENTE = 'superintendente',
+  SUPERINTENDENTE = 'superintendente'
 }

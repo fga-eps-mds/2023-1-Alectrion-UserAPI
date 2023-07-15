@@ -6,12 +6,21 @@ import {
   GetUserUseCase
 } from '../../useCase/getUser/getUserUseCase'
 import { User } from '../../domain/entities/user'
+import { Job } from '../../db/entities/userEnum/job'
+import { Role } from '../../db/entities/userEnum/role'
 
 type HttpRequest = {
   userName?: string
   email?: string
   userId?: string
+  role?: Role
+  job?: Job
+  search?: string
+  deletedUsers?: boolean
+  take?: number
+  skip?: number
 }
+
 type Model = Error | User[]
 
 export class GetUserController extends Controller {
