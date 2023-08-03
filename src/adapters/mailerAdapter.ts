@@ -59,7 +59,8 @@ export class MailerAdapter implements MailService {
       .then(() => {
         return true
       })
-      .catch(() => {
+      .catch((data) => {
+        console.log(data)
         return false
       })
   }
