@@ -1,5 +1,7 @@
 import { Controller } from '../protocols/controller'
 import {
+  IncorrectPasswordError,
+  LackingInformationError,
   UpdatePasswordData,
   UpdatePasswordError,
   UpdatePasswordUseCase
@@ -25,6 +27,12 @@ export class UpdatePasswordControler extends Controller {
     if (response.isSuccess && response.data) return ok(response.data)
 
     if (response.error instanceof UpdatePasswordError)
+      return badRequest(new BadRequestError(response.error.message))
+
+    if (response.error instanceof IncorrectPasswordError)
+      return badRequest(new BadRequestError(response.error.message))
+
+    if (response.error instanceof LackingInformationError)
       return badRequest(new BadRequestError(response.error.message))
 
     return serverError(response.error)

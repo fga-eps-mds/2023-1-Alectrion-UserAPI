@@ -2,6 +2,15 @@ import { Job } from '../../db/entities/userEnum/job'
 import { Role } from '../../db/entities/userEnum/role'
 import { User } from '../../domain/entities/user'
 
+export type Query = {
+  role?: Role
+  job?: Job
+  search?: string
+  deletedUsers?: boolean
+  take?: number
+  skip?: number
+}
+
 export interface Repository {
   createUser(params: {
     name: string
@@ -19,6 +28,6 @@ export interface Repository {
   findOneByEmail(email: string): Promise<User | undefined>
   findOneByUsername(username: string): Promise<User | undefined>
   findOneByCpf(cpf: string): Promise<User | undefined>
-  findAll(): Promise<User | undefined>
+  findAll(query: Query): Promise<User | undefined>
   findToAuthenticate(userInput: string): Promise<User | undefined | null>
 }

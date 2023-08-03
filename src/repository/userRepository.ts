@@ -2,7 +2,8 @@ import { dataSource } from '../db/config'
 import { User } from '../db/entities/user'
 import { Role } from '../db/entities/userEnum/role'
 import { Job } from '../db/entities/userEnum/job'
-import { Repository } from './protocol/repository'
+import { Query, Repository } from './protocol/repository'
+import { ILike } from 'typeorm'
 
 class UserRepository implements Repository {
   private readonly userRepository
@@ -69,11 +70,36 @@ class UserRepository implements Repository {
     return user
   }
 
-  async findAll(): Promise<any> {
-    const users = await this.userRepository.find({
-      // where: { isDeleted: false }
+  async findAll(query: Query): Promise<any> {
+    const { role, job, search, deletedUsers, take, skip } = query
+    const defaultConditions = {
+      role,
+      job,
+      isDeleted: deletedUsers
+    }
+
+    let searchConditions
+    if (typeof search !== 'undefined') {
+      searchConditions = [
+        {
+          username: ILike(`%${search}%`),
+          ...defaultConditions
+        },
+        {
+          cpf: ILike(`%${search}%`),
+          ...defaultConditions
+        }
+      ]
+    } else searchConditions = defaultConditions
+
+    const queryResult = await this.userRepository.find({
+      order: { updatedAt: 'DESC' },
+      where: searchConditions,
+      take,
+      skip
     })
-    return users
+
+    return queryResult
   }
 
   async findOneByUsername(username: string): Promise<any> {

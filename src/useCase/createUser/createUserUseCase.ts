@@ -124,7 +124,7 @@ export class CreateUserUseCase
       email: createUserData.email,
       cpf: createUserData.cpf,
       username: createUserData.username,
-      job: Job[createUserData.jobFunction],
+      job: createUserData.jobFunction as Job,
       role: Role[createUserData.role],
       temporaryPassword: createUserData.role !== 'CONSULTA'
     })

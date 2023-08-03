@@ -6,12 +6,21 @@ import {
   GetUserUseCase
 } from '../../useCase/getUser/getUserUseCase'
 import { User } from '../../domain/entities/user'
+import { Job } from '../../db/entities/userEnum/job'
+import { Role } from '../../db/entities/userEnum/role'
 
 type HttpRequest = {
   userName?: string
   email?: string
   userId?: string
+  role?: Role
+  job?: Job
+  search?: string
+  deletedUsers?: boolean
+  take?: number
+  skip?: number
 }
+
 type Model = Error | User[]
 
 export class GetUserController extends Controller {
@@ -23,10 +32,10 @@ export class GetUserController extends Controller {
     const response = await this.getUserUseCase.execute(params)
     if (response.isSuccess && response.data) {
       return ok(response.data)
-    } else {
-      if (response.error instanceof GetUserError) {
-        return badRequest(new BadRequestError(response.error.message))
-      } else return serverError(response.error)
     }
+    if (response.error instanceof GetUserError) {
+      return badRequest(new BadRequestError(response.error.message))
+    }
+    return serverError(response.error)
   }
 }
